@@ -2,6 +2,8 @@ streamlit
 pandas
 altair
 plotly.express
-json
+geojson
+jsonschema
+jsonschema-specifications
 seaborn
 matplotlib
