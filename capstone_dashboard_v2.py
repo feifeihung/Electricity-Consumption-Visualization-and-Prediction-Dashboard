@@ -382,7 +382,7 @@ elif page=='Data Visualization':
         label='Critical Features for Household Electricity Consumption',
         options=['Location', 'Weather', 'House Conditions', 'Household Characteristics', 'Appliances'])
     if option == 'Location':
-        geojson_path = 'C:/Users/feife/Downloads/contiguous-usa.geojson'
+        geojson_path = 'contiguous-usa.geojson'
         # https://github.com/ResidentMario/geoplot-data/blob/master/contiguous-usa.geojson
         with open(geojson_path) as f:
             geojson_data = json.load(f)
