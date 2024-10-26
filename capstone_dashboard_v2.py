@@ -23,7 +23,7 @@ st.markdown('Data Source: EIA')
 
 
 
-df=pd.read_csv('C:/Users/feife/Downloads/recs2020_public_v7.csv')
+df=pd.read_csv('recs2020_public_v7.csv')
 df = df.dropna()
 
 #=========================================================================================================
