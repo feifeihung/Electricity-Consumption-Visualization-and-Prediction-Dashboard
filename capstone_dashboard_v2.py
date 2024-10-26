@@ -357,6 +357,7 @@ sidebar_style = """
 <style>
 .stSidebar>div {
         height: 200% !important;
+	weidth: 75% !important;
         background-color: #D95F1A;
         padding: 4px;
         font-family: sans-serif;
