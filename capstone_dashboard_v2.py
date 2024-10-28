@@ -14,7 +14,7 @@ st.set_page_config(
     page_title="US Household Electricity Consumption Dashboard",
     page_icon=':derelict_house_building:' ,
     layout="wide",
-    initial_sidebar_state="collapsed")
+    initial_sidebar_state="expanded")
 
 alt.themes.enable("dark")
 st.markdown("<h1 style= 'text-align:center;'>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
