@@ -357,7 +357,7 @@ st.markdown("""
     <style>
     /* Adjust sidebar font size */
     .css-1d391kg {  /* This class targets sidebar text */
-        font-size: 18px;
+        font-size: 28px;
     }
     </style>
     """, unsafe_allow_html=True)
