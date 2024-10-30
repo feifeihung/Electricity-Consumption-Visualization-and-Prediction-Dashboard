@@ -353,21 +353,15 @@ style="""
 st.markdown(style, unsafe_allow_html=True)
 
 
-sidebar_style = """
-<style>
-.stSidebar>div {
-        height: 200% !important;
-	weidth: 75% !important;
-        background-color: #D95F1A;
-        padding: 10px;
-        font-family: sans-serif;
-        font-weight: bold;
-        font-size: 50px !important;
-	}
+st.markdown("""
+    <style>
+    /* Adjust sidebar font size */
+    .css-1d391kg {  /* This class targets sidebar text */
+        font-size: 18px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-</style>
-"""
-st.markdown(sidebar_style, unsafe_allow_html=True)
 
 
 
