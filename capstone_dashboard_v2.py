@@ -359,10 +359,10 @@ sidebar_style = """
         height: 200% !important;
 	weidth: 75% !important;
         background-color: #D95F1A;
-        padding: 4px;
+        padding: 10px;
         font-family: sans-serif;
         font-weight: bold;
-        font-size: 42px !important;
+        font-size: 50px !important;
 	}
 
 </style>
