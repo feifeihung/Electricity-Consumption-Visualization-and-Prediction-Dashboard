@@ -376,7 +376,7 @@ st.markdown(sidebar_style, unsafe_allow_html=True)
 #=========================================================================================================
 st.sidebar.title('Choose Sector')
 page=st.sidebar.radio('', ['Data Visualization', 'Prediction'])
-if page=='Predeiction':
+if page=='Prediction':
     image_path = 'output.png'  # Replace with the actual file path
 st.image(image_path, caption='Prediction Result', use_column_width=True)
 
