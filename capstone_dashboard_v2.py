@@ -29,8 +29,8 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color: #101517; /* Choose your preferred color here */
-	color: #FAFAFA; 
+        background-color: #dcdcde; /* Choose your preferred color here */
+	color: black; 
  
     }
 </style>
@@ -57,7 +57,7 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 sidebar_style = """
 <style>
     /* Set background color for the main content */
-    .stsidebar {
+    .stSidebar {
         background-color: #D95F1A; /* Choose your preferred color here */
 	color: #FAFAFA; 
  
