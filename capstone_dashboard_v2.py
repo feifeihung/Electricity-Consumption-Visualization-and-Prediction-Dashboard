@@ -364,7 +364,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 with st.sidebar:
-    "# Choose Sector"
+    st.markdown("# Select a Sector")  # Header in sidebar
+    page = st.sidebar.radio(['','Data Visualization', 'Prediction'])
 
 
 
@@ -372,8 +373,8 @@ with st.sidebar:
 #=========================================================================================================
 #                                   Select Option
 #=========================================================================================================
-st.sidebar.title('Choose Sector')
-page=st.sidebar.radio(['Data Visualization', 'Prediction'])
+#st.sidebar.title('Choose Sector')
+#page=st.sidebar.radio(['','Data Visualization', 'Prediction'])
 if page=='Prediction':    
 	image_path = 'output.png'  # Replace with the actual file path
 	st.image(image_path, caption='Prediction Result', use_column_width=True)
