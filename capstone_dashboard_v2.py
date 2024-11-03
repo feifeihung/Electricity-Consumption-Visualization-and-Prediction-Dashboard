@@ -10,6 +10,30 @@ import json
 import seaborn as sns
 import plotly.graph_objects as go
 
+
+
+
+df=pd.read_csv('recs2020_public_v7.csv')
+df = df.dropna()
+
+#=========================================================================================================
+#                                   Custom CSS
+#=========================================================================================================
+background_style = """
+<style>
+    /* Set background color for the main content */
+    .stApp {
+        background-color: #101517; /* Choose your preferred color here */
+	color: #FAFAFA;
+ 
+ 
+    }
+</style>
+"""
+
+# Apply the CSS style
+st.markdown(background_style, unsafe_allow_html=True)
+
 st.set_page_config(
     page_title="US Household Electricity Consumption Dashboard",
     page_icon=':derelict_house_building:' , color='white'
@@ -23,8 +47,37 @@ st.write('')
 st.markdown('Data Source: EIA')
 
 
-df=pd.read_csv('recs2020_public_v7.csv')
-df = df.dropna()
+selectbox_style="""
+	<style>
+	.stSelectbox >div[data-baseweb="select"]> div {height: 180% !important;
+	      padding: 5px; font-family: 'Arial' !important; border: 2px solid #be0051 !important; font-weight: bold; 
+	      font-size: 20px; 
+	}
+	</style>
+	"""
+st.markdown(selectbox_style, unsafe_allow_html=True)
+
+
+sidebar_style = """
+<style>
+[data-testid=stSidebar] {
+        height: 200% !important;
+        background-color: #D95F1A;
+        padding: 4px;
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 42px !important;
+	font-color: white;
+	}
+
+</style>
+"""
+st.markdown(sidebar_style, unsafe_allow_html=True)
+with st.sidebar:
+	st.title("Select a Sector")
+	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
+
+
 
 #=========================================================================================================
 #                                   Features
@@ -338,54 +391,6 @@ def boxplot(data,x,y,title,category_orders):
     st.plotly_chart(fig)
 
 
-#=========================================================================================================
-#                                   Custom CSS
-#=========================================================================================================
-background_style = """
-<style>
-    /* Set background color for the main content */
-    .stApp {
-        background-color: #101517; /* Choose your preferred color here */
-	color: #FAFAFA;
- 
- 
-    }
-</style>
-"""
-
-# Apply the CSS style
-st.markdown(background_style, unsafe_allow_html=True)
-
-
-selectbox_style="""
-	<style>
-	.stSelectbox >div[data-baseweb="select"]> div {height: 180% !important;
-	      padding: 5px; font-family: 'Arial' !important; border: 2px solid #be0051 !important; font-weight: bold; 
-	      font-size: 20px; 
-	}
-	</style>
-	"""
-st.markdown(selectbox_style, unsafe_allow_html=True)
-
-
-sidebar_style = """
-<style>
-[data-testid=stSidebar] {
-        height: 200% !important;
-        background-color: #D95F1A;
-        padding: 4px;
-        font-family: sans-serif;
-        font-weight: bold;
-        font-size: 42px !important;
-	font-color: white;
-	}
-
-</style>
-"""
-st.markdown(sidebar_style, unsafe_allow_html=True)
-with st.sidebar:
-	st.title("Select a Sector")
-	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
 
 
 
