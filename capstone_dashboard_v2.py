@@ -66,13 +66,17 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 
 sidebar_style = """
 <style>
-    /* Set sidebar background and text color */
-    section[data-testid="stSidebar"] {
+    /* Set sidebar background color */
+    .stSidebar {
         background-color: #D95F1A; /* Sidebar background color */
     }
-    /* Set radio button text color in the sidebar */
-    section[data-testid="stSidebar"] .stRadio label {
-        color: #FAFAFA !important; /* Radio button text color set to white */
+    /* Ensure all text in the sidebar is white */
+    .stSidebar, .stSidebar * {
+        color: #FAFAFA !important; /* Set all text in sidebar to white */
+    }
+    /* Specifically target radio button labels */
+    div[role="radiogroup"] label {
+        color: #FAFAFA !important; /* Force radio button text to white */
     }
 </style>
 """
