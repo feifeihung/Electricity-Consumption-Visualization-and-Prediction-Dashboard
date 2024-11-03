@@ -354,15 +354,15 @@ st.markdown(style, unsafe_allow_html=True)
 
 
 st.markdown("""
-    <style>
-    /* Adjust sidebar font size */
-    .css-1d391kg {  /* This class targets sidebar text */
-        font-size: 28px;
-	color:white
-	background-color: black;
+<style>
+    [data-testid=stSidebar] {
+        background-color: #ff000050;
     }
-    </style>
-    """, unsafe_allow_html=True)
+</style>
+""", unsafe_allow_html=True)
+
+with st.sidebar:
+    "## This is the sidebar"
 
 
 
