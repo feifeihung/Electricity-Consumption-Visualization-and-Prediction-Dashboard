@@ -357,7 +357,7 @@ st.markdown("""
 <style>
     [data-testid=stSidebar] {
         background-color: #808000;
-	color: white;
+	color: white !important;
 	font-size:55px;
     }
 </style>
