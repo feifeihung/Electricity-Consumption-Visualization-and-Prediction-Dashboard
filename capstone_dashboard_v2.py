@@ -359,20 +359,20 @@ style="""
 st.markdown(style, unsafe_allow_html=True)
 
 
-st.markdown("""
+sidebar_style = """
 <style>
-    [data-testid=stSidebar] {
-        background-color: #808000;
-	color: white !important;
-	font-size:55px;
-    }
+.stSidebar>div {
+        height: 200% !important;
+        background-color: #D95F1A;
+        padding: 4px;
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 42px !important;
+	}
+
 </style>
-""", unsafe_allow_html=True)
-
-with st.sidebar:
-    st.markdown("# Select a Sector")  # Header in sidebar
-    page = st.sidebar.radio('',['Data Visualization', 'Prediction'])
-
+"""
+st.markdown(sidebar_style, unsafe_allow_html=True)
 
 
 
