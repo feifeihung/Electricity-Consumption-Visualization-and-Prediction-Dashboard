@@ -36,8 +36,7 @@ st.markdown(background_style, unsafe_allow_html=True)
 
 st.set_page_config(
     page_title="US Household Electricity Consumption Dashboard",
-    page_icon=':derelict_house_building:' , color='white',
-
+    page_icon=':derelict_house_building:' , 
     layout="wide",
     initial_sidebar_state="expanded")
 
