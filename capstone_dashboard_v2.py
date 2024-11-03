@@ -64,7 +64,7 @@ sidebar_style = """
         font-family: sans-serif;
         font-weight: bold;
         font-size: 42px !important;
-	font-color: white;
+	color: #FAFAFA;
 	}
 
 </style>
