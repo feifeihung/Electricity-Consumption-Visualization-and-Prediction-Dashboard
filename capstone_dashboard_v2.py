@@ -363,7 +363,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 with st.sidebar:
-    "## This is the sidebar"
+    "# Choose Sector"
 
 
 
