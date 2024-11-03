@@ -65,21 +65,13 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 #</style>
 #"""
 
-st.markdown(
-        """
-        <style>
-        /* Change the background color of the sidebar */
-        .sidebar .sidebar-content {
-            background-color: #31333F;
-        }
-        /* Change the text color of the sidebar */
-        .sidebar .sidebar-content {
-            color: blue;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+div.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"]  {
+ background-color: #9AC5F4;
+ padding-right: 10px;
+ padding-left: 4px;
+ padding-bottom: 3px;
+ margin: 4px;
+}
 #st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
