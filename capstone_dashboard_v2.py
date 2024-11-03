@@ -348,7 +348,7 @@ def boxplot(data,x,y,title,category_orders):
 #                                   Custom CSS
 #=========================================================================================================
 
-style="""
+selectbox_style="""
 	<style>
 	.stSelectbox >div[data-baseweb="select"]> div {height: 180% !important;
 	      padding: 5px; font-family: 'Arial' !important; border: 2px solid #be0051 !important; font-weight: bold; 
@@ -356,12 +356,12 @@ style="""
 	}
 	</style>
 	"""
-st.markdown(style, unsafe_allow_html=True)
+st.markdown(selectbox_style, unsafe_allow_html=True)
 
 
 sidebar_style = """
 <style>
-[data-testid=stSidebar] {
+.stsidebar>div[data-testid=stSidebar]>div {
         height: 200% !important;
         background-color: #D95F1A;
         padding: 4px;
