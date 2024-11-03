@@ -22,7 +22,7 @@ st.write('')
 st.markdown('Data Source: EIA')
 st.markdown("""
 <style>
-    body{background-color: black
+    body{background-color: black; color:white;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -368,13 +368,14 @@ sidebar_style = """
         font-family: sans-serif;
         font-weight: bold;
         font-size: 42px !important;
+	color: white;
 	}
 
 </style>
 """
 st.markdown(sidebar_style, unsafe_allow_html=True)
 with st.sidebar:
-	st.title("#Select A Sector")
+	st.title("# Select A Sector")
 	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
 
 
