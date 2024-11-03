@@ -25,16 +25,17 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-#background_style = """
-#<style>
-#    /* Set background color for the main content */
-#    .stApp {
-#        background-color: peachpuff; /* Choose your preferred color here */
-#	color: black; 
-# 
-#    }
-#</style>
-#"""
+background_style = """
+<style>
+    /* Set background color for the main content */
+    .stApp {
+        background-color: peachpuff; /* Choose your preferred color here */
+	color: black; 
+ 
+    }
+</style>
+"""
+'''
 background_style = """
 <style>
 .st-emotion-cache-h4xjwg {
@@ -50,6 +51,7 @@ background_style = """
 }
 </style>
 """
+'''
 # Apply the CSS style
 st.markdown(background_style, unsafe_allow_html=True)
 
