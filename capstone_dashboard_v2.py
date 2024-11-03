@@ -355,7 +355,7 @@ st.markdown(style, unsafe_allow_html=True)
 
 st.markdown("""
 <style>
-    .stSidebar>div[data-baseweb=stSidebar]>div {
+    [data-testid=stSidebar] {
         background-color: #808000;
 	color: white !important;
 	font-size:55px;
