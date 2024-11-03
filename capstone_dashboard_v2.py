@@ -59,20 +59,25 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 #    /* Set background color for the main content */
 #    .stSidebar {
 #        background-color: #D95F1A; /* Choose your preferred color here */
-#	color: #FAFAFA !important; 
-# 
+#	color: #FAFAFA !important;  
 #    }
 #</style>
 #"""
 
-div.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"]  {
- background-color: #9AC5F4;
- #padding-right: 10px;
- #padding-left: 4px;
- #padding-bottom: 3px;
- #margin: 4px;
-}
-#st.markdown(sidebar_style, unsafe_allow_html=True)
+sidebar_style = """
+<style>
+    /* Set sidebar background and text color */
+    section[data-testid="stSidebar"] {
+        background-color: #D95F1A; /* Sidebar background color */
+    }
+    /* Set radio button text color in the sidebar */
+    section[data-testid="stSidebar"] .stRadio label {
+        color: #FAFAFA !important; /* Radio button text color set to white */
+    }
+</style>
+"""
+
+st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
 	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 25px '> Select a Sector </h1>", unsafe_allow_html=True)
