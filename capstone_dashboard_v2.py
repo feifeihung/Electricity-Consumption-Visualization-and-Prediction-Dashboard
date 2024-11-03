@@ -90,7 +90,7 @@ st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
 	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 25px '> Select a Sector </h1>", unsafe_allow_html=True)
-	page=st.sidebar.radio('',[":rainbow[Data Visualization]", "***Prediction***"])
+	page=st.sidebar.radio('',["Data Visualization", "Prediction"])
 
 
 
