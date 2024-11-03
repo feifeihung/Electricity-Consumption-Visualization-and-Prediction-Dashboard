@@ -340,12 +340,17 @@ def boxplot(data,x,y,title,category_orders):
 #=========================================================================================================
 #                                   Custom CSS
 #=========================================================================================================
-st.markdown("""
+background_style = """
 <style>
-    body{background-color: black; color:white;
+    /* Set background color for the main content */
+    .stApp {
+        background-color: #F0F0F5; /* Choose your preferred color here */
     }
 </style>
-""", unsafe_allow_html=True)
+"""
+
+# Apply the CSS style
+st.markdown(background_style, unsafe_allow_html=True)
 
 
 selectbox_style="""
