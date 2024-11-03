@@ -358,6 +358,8 @@ st.markdown("""
     /* Adjust sidebar font size */
     .css-1d391kg {  /* This class targets sidebar text */
         font-size: 28px;
+	color:white
+	background-color: black;
     }
     </style>
     """, unsafe_allow_html=True)
