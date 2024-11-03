@@ -372,7 +372,7 @@ with st.sidebar:
 #=========================================================================================================
 #                                   Select Option
 #=========================================================================================================
-st.sidebar.title('Choose Sector', color:'white')
+st.sidebar.title('Choose Sector')
 page=st.sidebar.radio(['Data Visualization', 'Prediction'])
 if page=='Prediction':    
 	image_path = 'output.png'  # Replace with the actual file path
