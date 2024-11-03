@@ -365,7 +365,7 @@ st.markdown("""
 
 with st.sidebar:
     st.markdown("# Select a Sector")  # Header in sidebar
-    page = st.radio(['Data Visualization', 'Prediction'])
+    page = st.radio('',['Data Visualization', 'Prediction'])
 
 
 
