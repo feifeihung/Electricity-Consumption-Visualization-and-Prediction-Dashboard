@@ -20,6 +20,12 @@ st.set_page_config(
 st.markdown("<h1 style= 'text-align:center;'>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
 st.markdown('Data Source: EIA')
+st.markdown("""
+<style>
+    {background-color: black
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 
@@ -346,7 +352,7 @@ style="""
 	<style>
 	.stSelectbox >div[data-baseweb="select"]> div {height: 180% !important;
 	      padding: 5px; font-family: 'Arial' !important; border: 2px solid #be0051 !important; font-weight: bold; 
-	      font-size: 20px; background-color:black;
+	      font-size: 20px; 
 	}
 	</style>
 	"""
