@@ -356,7 +356,8 @@ st.markdown(style, unsafe_allow_html=True)
 st.markdown("""
 <style>
     [data-testid=stSidebar] {
-        background-color: #D2691E;
+        background-color: #808000;
+	color: white;
 	font-size:25px;
     }
 </style>
@@ -371,8 +372,8 @@ with st.sidebar:
 #=========================================================================================================
 #                                   Select Option
 #=========================================================================================================
-st.sidebar.title('Choose Sector')
-page=st.sidebar.radio('', ['Data Visualization', 'Prediction'])
+st.sidebar.title('Choose Sector', color:white)
+page=st.sidebar.radio(['Data Visualization', 'Prediction'])
 if page=='Prediction':    
 	image_path = 'output.png'  # Replace with the actual file path
 	st.image(image_path, caption='Prediction Result', use_column_width=True)
