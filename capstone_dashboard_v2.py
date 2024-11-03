@@ -25,32 +25,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-#background_style = """
-#<style>
-#    /* Set background color for the main content */
-#    .stApp {
-#        background-color: peachpuff; /* Choose your preferred color here */
-#	color: black; 
-# 
-#    }
-#</style>
-#"""
-
 background_style = """
 <style>
-body {
-    margin: 0px;
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 400;
-    line-height: 1.6;
-    color: rgb(49, 51, 63);
-    background-color: rgb(10, 10, 10);
-    text-size-adjust: 100%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    -webkit-font-smoothing: auto;
-}
+    /* Set background color for the main content */
+    .stApp {
+        background-color: peachpuff; /* Choose your preferred color here */
+	color: black; 
+ 
+    }
 </style>
 """
+
+
 
 # Apply the CSS style
 st.markdown(background_style, unsafe_allow_html=True)
