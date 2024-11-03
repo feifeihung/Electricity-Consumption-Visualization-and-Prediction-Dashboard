@@ -20,13 +20,6 @@ st.set_page_config(
 st.markdown("<h1 style= 'text-align:center;'>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
 st.markdown('Data Source: EIA')
-st.markdown("""
-<style>
-    body{background-color: black; color:white;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 
 
 df=pd.read_csv('recs2020_public_v7.csv')
@@ -347,6 +340,13 @@ def boxplot(data,x,y,title,category_orders):
 #=========================================================================================================
 #                                   Custom CSS
 #=========================================================================================================
+st.markdown("""
+<style>
+    body{background-color: black; color:white;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 
 selectbox_style="""
 	<style>
