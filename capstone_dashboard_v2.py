@@ -65,18 +65,22 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 #</style>
 #"""
 
-sidebar_style = """
-<style>
-    .css-1d391kg {  /* This targets the sidebar's main container */
-        background-color: #D95F1A;
-        color: #FAFAFA !important;
-    }
-    .css-1d391kg .stRadio label {
-        color: #FAFAFA !important; /* Ensures radio button text is white */
-    }
-</style>
-"""
-st.markdown(sidebar_style, unsafe_allow_html=True)
+st.markdown(
+        """
+        <style>
+        /* Change the background color of the sidebar */
+        .sidebar .sidebar-content {
+            background-color: #31333F;
+        }
+        /* Change the text color of the sidebar */
+        .sidebar .sidebar-content {
+            color: blue;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+#st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
 	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 25px '> Select a Sector </h1>", unsafe_allow_html=True)
