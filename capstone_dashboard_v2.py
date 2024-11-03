@@ -71,7 +71,7 @@ sidebar_style = """
 <style>
     /* Set sidebar background color */
     .stSidebar {
-        background-color: #14A3C7; /* Sidebar background color */
+        background-color: #6495ED; /* Sidebar background color */
     }
     /* Ensure all text in the sidebar is white */
     .stSidebar, .stSidebar * {
