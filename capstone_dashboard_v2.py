@@ -358,14 +358,14 @@ st.markdown("""
     [data-testid=stSidebar] {
         background-color: #808000;
 	color: white;
-	font-size:25px;
+	font-size:55px;
     }
 </style>
 """, unsafe_allow_html=True)
 
 with st.sidebar:
     st.markdown("# Select a Sector")  # Header in sidebar
-    page = st.radio('Choose an option:', ['','Data Visualization', 'Prediction'])
+    page = st.radio(['Data Visualization', 'Prediction'])
 
 
 
