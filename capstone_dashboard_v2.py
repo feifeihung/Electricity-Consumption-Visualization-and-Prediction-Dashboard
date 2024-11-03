@@ -22,7 +22,7 @@ st.write('')
 st.markdown('Data Source: EIA')
 st.markdown("""
 <style>
-    {background-color: black
+    body{background-color: black
     }
 </style>
 """, unsafe_allow_html=True)
