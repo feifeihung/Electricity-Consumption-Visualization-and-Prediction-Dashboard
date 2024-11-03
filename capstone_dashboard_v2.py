@@ -44,7 +44,7 @@ body {
     font-weight: 400;
     line-height: 1.6;
     color: rgb(49, 51, 63);
-    background-color: rgb(255, 218, 185);
+    background-color: rgb(10, 10, 10);
     text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-font-smoothing: auto;
