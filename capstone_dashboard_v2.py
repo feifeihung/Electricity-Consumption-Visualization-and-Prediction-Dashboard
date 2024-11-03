@@ -361,7 +361,7 @@ st.markdown(style, unsafe_allow_html=True)
 
 sidebar_style = """
 <style>
-.stSidebar>div[data-testid=stSidebar]>div {
+[data-testid=stSidebar] {
         height: 200% !important;
         background-color: #D95F1A;
         padding: 4px;
@@ -374,7 +374,7 @@ sidebar_style = """
 """
 st.markdown(sidebar_style, unsafe_allow_html=True)
 with st.sidebar:
-	st.markdown("#Select A Sector")
+	st.title("#Select A Sector")
 	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
 
 
