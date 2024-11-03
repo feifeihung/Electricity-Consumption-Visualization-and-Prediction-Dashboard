@@ -346,7 +346,7 @@ style="""
 	<style>
 	.stSelectbox >div[data-baseweb="select"]> div {height: 180% !important;
 	      padding: 5px; font-family: 'Arial' !important; border: 2px solid #be0051 !important; font-weight: bold; 
-	      font-size: 20px; 
+	      font-size: 20px; background-color:black;
 	}
 	</style>
 	"""
