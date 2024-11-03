@@ -29,7 +29,7 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color: peachpuff; /* Choose your preferred color here */
+        background-color:#C9DFEC; /* Choose your preferred color here */
 	color: black; 
  
     }
@@ -71,7 +71,7 @@ sidebar_style = """
 <style>
     /* Set sidebar background color */
     .stSidebar {
-        background-color: #D95F1A; /* Sidebar background color */
+        background-color: #14A3C7; /* Sidebar background color */
     }
     /* Ensure all text in the sidebar is white */
     .stSidebar, .stSidebar * {
