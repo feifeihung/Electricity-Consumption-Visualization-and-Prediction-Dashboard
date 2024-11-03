@@ -16,7 +16,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-alt.themes.enable("dark")
+
 st.markdown("<h1 style= 'text-align:center;'>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
 st.markdown('Data Source: EIA')
@@ -367,7 +367,7 @@ with st.sidebar:
     st.markdown("# Select a Sector")  # Header in sidebar
     page = st.radio('',['Data Visualization', 'Prediction'])
 
-
+alt.themes.enable("dark")
 
 
 #=========================================================================================================
