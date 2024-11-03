@@ -54,31 +54,28 @@ selectbox_style="""
 	"""
 st.markdown(selectbox_style, unsafe_allow_html=True)
 
+#sidebar_style = """
+#<style>
+#    /* Set background color for the main content */
+#    .stSidebar {
+#        background-color: #D95F1A; /* Choose your preferred color here */
+#	color: #FAFAFA !important; 
+# 
+#    }
+#</style>
+#"""
+
 sidebar_style = """
 <style>
-    /* Set background color for the main content */
-    .stSidebar {
-        background-color: #D95F1A; /* Choose your preferred color here */
-	color: #FAFAFA !important; 
- 
+    .css-1d391kg {  /* This targets the sidebar's main container */
+        background-color: #D95F1A;
+        color: #FAFAFA !important;
+    }
+    .css-1d391kg .stRadio label {
+        color: #FAFAFA !important; /* Ensures radio button text is white */
     }
 </style>
 """
-
-#sidebar_style = """
-#<style>
-#[data-testid=stSidebar] {
-#        height: 200% !important;
-#        background-color: #D95F1A;
-#        padding: 4px;
-#        font-family: sans-serif;
-#        font-weight: bold;
-#        font-size: 42px !important;
-#	color: #FAFAFA;
-#	}
-#
-#</style>
-#"""
 st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
