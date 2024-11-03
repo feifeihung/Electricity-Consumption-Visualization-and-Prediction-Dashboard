@@ -57,7 +57,7 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 sidebar_style = """
 <style>
     /* Set background color for the main content */
-    .stsidebar {
+    .stSidebar {
         background-color: #D95F1A; /* Choose your preferred color here */
 	color: #FAFAFA !important; 
  
