@@ -29,7 +29,7 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color:#EBF4FA; /* Choose your preferred color here */
+        background-color:#E6E6FA; /* Choose your preferred color here */
 	color: black; 
  
     }
