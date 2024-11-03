@@ -373,6 +373,9 @@ sidebar_style = """
 </style>
 """
 st.markdown(sidebar_style, unsafe_allow_html=True)
+with st.sidebar:
+	st.markdown('#Select A Sector')
+	page=st.sidebar.radio(['','Data Visualization', 'Prediction'])
 
 
 
