@@ -67,7 +67,7 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 
 div.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"]  {
  background-color: #9AC5F4;
- padding-right: 10px;
+ #padding-right: 10px;
  padding-left: 4px;
  padding-bottom: 3px;
  margin: 4px;
