@@ -361,7 +361,7 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 
 sidebar_style = """
 <style>
-.stsidebar>div[data-testid=stSidebar]>div {
+[data-testid=stSidebar] {
         height: 200% !important;
         background-color: #D95F1A;
         padding: 4px;
