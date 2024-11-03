@@ -38,17 +38,16 @@ st.set_page_config(
 
 background_style = """
 <style>
-.st-emotion-cache-h4xjwg {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    height: 3.75rem;
-    #background: rgb(255, 218, 185);
-    background: rgb(14, 17, 23);
-    outline: none;
-    z-index: 999990;
-    display: block;
+body {
+    margin: 0px;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgb(49, 51, 63);
+    background-color: rgb(255, 218, 185);
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-font-smoothing: auto;
 }
 </style>
 """
