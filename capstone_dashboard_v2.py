@@ -368,14 +368,14 @@ sidebar_style = """
         font-family: sans-serif;
         font-weight: bold;
         font-size: 42px !important;
-	color: white;
+	font-color: white;
 	}
 
 </style>
 """
 st.markdown(sidebar_style, unsafe_allow_html=True)
 with st.sidebar:
-	st.title("# Select A Sector")
+	st.title("Select a Sector")
 	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
 
 
