@@ -345,7 +345,7 @@ background_style = """
     /* Set background color for the main content */
     .stApp {
         background-color: #101517; /* Choose your preferred color here */
-	Secondary background color: #262730;  Text color: #FAFAFA;
+	color: #FAFAFA;
  
  
     }
