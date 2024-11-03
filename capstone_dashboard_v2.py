@@ -19,13 +19,18 @@ df = df.dropna()
 #=========================================================================================================
 #                                   Custom CSS
 #=========================================================================================================
+st.set_page_config(
+    page_title="US Household Electricity Consumption Dashboard",
+    page_icon=':derelict_house_building:' , 
+    layout="wide",
+    initial_sidebar_state="expanded")
+
 background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
         background-color: #101517; /* Choose your preferred color here */
-	color: #FAFAFA;
- 
+	color: #FAFAFA; 
  
     }
 </style>
@@ -33,13 +38,6 @@ background_style = """
 
 # Apply the CSS style
 st.markdown(background_style, unsafe_allow_html=True)
-
-st.set_page_config(
-    page_title="US Household Electricity Consumption Dashboard",
-    page_icon=':derelict_house_building:' , 
-    layout="wide",
-    initial_sidebar_state="expanded")
-
 
 st.markdown("<h1 style= 'text-align:center;'>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
