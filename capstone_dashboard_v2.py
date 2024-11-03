@@ -57,9 +57,9 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 sidebar_style = """
 <style>
     /* Set background color for the main content */
-    .stSidebar {
+    .css-1d391kg {
         background-color: #D95F1A; /* Choose your preferred color here */
-	color: #FAFAFA; 
+	color: #FAFAFA !important; 
  
     }
 </style>
@@ -82,7 +82,7 @@ sidebar_style = """
 st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
-	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 42px '> Select a Sector </h1>", unsafe_allow_html=True)
+	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 25px '> Select a Sector </h1>", unsafe_allow_html=True)
 	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
 
 
