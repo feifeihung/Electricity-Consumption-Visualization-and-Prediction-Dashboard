@@ -54,22 +54,33 @@ selectbox_style="""
 	"""
 st.markdown(selectbox_style, unsafe_allow_html=True)
 
-
 sidebar_style = """
 <style>
-[data-testid=stSidebar] {
-        height: 200% !important;
-        background-color: #D95F1A;
-        padding: 4px;
-        font-family: sans-serif;
-        font-weight: bold;
-        font-size: 42px !important;
-	color: #FAFAFA;
-	}
-
+    /* Set background color for the main content */
+    .stsidebar {
+        background-color: #D95F1A; /* Choose your preferred color here */
+	color: #FAFAFA; 
+ 
+    }
 </style>
 """
+
+#sidebar_style = """
+#<style>
+#[data-testid=stSidebar] {
+#        height: 200% !important;
+#        background-color: #D95F1A;
+#        padding: 4px;
+#        font-family: sans-serif;
+#        font-weight: bold;
+#        font-size: 42px !important;
+#	color: #FAFAFA;
+#	}
+#
+#</style>
+#"""
 st.markdown(sidebar_style, unsafe_allow_html=True)
+
 with st.sidebar:
 	st.title("Select a Sector")
 	page=st.sidebar.radio('',['Data Visualization', 'Prediction'])
