@@ -45,7 +45,7 @@ background_style = """
     right: 0px;
     height: 3.75rem;
     background: rgb(255, 218, 185);
-    background: rgb(14, 17, 23);
+    #background: rgb(14, 17, 23);
     outline: none;
     z-index: 999990;
     display: block;
