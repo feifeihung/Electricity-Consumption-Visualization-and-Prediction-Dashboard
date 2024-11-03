@@ -12,7 +12,8 @@ import plotly.graph_objects as go
 
 st.set_page_config(
     page_title="US Household Electricity Consumption Dashboard",
-    page_icon=':derelict_house_building:' ,
+    page_icon=':derelict_house_building:' , color='white'
+
     layout="wide",
     initial_sidebar_state="expanded")
 
