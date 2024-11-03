@@ -81,7 +81,7 @@ sidebar_style = """
 	font-size: 44px !important; /* Force radio button text to white */
     }
     div[role="radiogroup"] {
-        font-size: 44px !important; /* This affects the entire radio group, including labels */
+        font-size: 44px !important; padding: 5px;/* This affects the entire radio group, including labels */
     }
 </style>
 """
