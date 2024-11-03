@@ -39,7 +39,7 @@ background_style = """
 # Apply the CSS style
 st.markdown(background_style, unsafe_allow_html=True)
 
-st.markdown("<h1 style= 'text-align:center; color: #FAFAFA; '>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
+st.markdown("<h1 style= 'text-align:center; color:#8a2424;  '>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
 st.markdown('Data Source: EIA')
 
