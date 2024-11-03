@@ -64,6 +64,10 @@ st.markdown(selectbox_style, unsafe_allow_html=True)
 #</style>
 #"""
 
+genre = st.radio(
+    " ",
+    [":rainbow[Data Visualization]", "***Prediction***"]
+)
 sidebar_style = """
 <style>
     /* Set sidebar background color */
