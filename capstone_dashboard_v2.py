@@ -361,7 +361,7 @@ st.markdown(style, unsafe_allow_html=True)
 
 sidebar_style = """
 <style>
-.stSidebar>div[data-testid=stSidebar] {
+.stSidebar>div[data-testid=stSidebar]>div {
         height: 200% !important;
         background-color: #D95F1A;
         padding: 4px;
