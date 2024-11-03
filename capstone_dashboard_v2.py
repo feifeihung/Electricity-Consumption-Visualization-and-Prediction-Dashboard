@@ -344,7 +344,7 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color: #696969; /* Choose your preferred color here */
+        background-color: #3c434a; /* Choose your preferred color here */
     }
 </style>
 """
