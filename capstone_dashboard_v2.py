@@ -448,10 +448,28 @@ if page=="📊Data Visualization":
         )
 
         # Display the map in Streamlit
-        c1, c2 = st.columns(2)
+        c1, c2 = st.columns((3, 1.5), gap='medium')
         with c1:
             st.plotly_chart(fig, use_container_width=True)
-        with c2:
+        with c2:	
+		mean_KWH_by_state = mean_KWH_by_state.sort_values(by='Average_KWH', ascending=False)
+            st.markdown('#### Top States')
+
+            st.dataframe(mean_KWH_by_state,
+                         column_order=("State", "Average_KWH"),
+                         hide_index=True,
+                         width=None,
+                         column_config={
+                             "State": st.column_config.TextColumn(
+                                 "State",
+                             ),
+                             "Average_KWH": st.column_config.ProgressColumn(
+                                 "Average Electricity Consumption",
+                                 format="%f",
+                                 min_value=0,
+                                 max_value=max(mean_KWH_by_state.Average_KWH),
+                             )}
+                         ,use_container_width=True)
             st.subheader("Average Household Electricity Consumption by State")
             st.dataframe(mean_KWH_by_state, use_container_width=True)
 
