@@ -431,7 +431,7 @@ if page=="📊Data Visualization":
             color='Average_KWH',  # Column to use for color scale
             hover_name='State',  # Hover data: state names
             hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-            color_continuous_scale='RdPu',  # Color scale
+            color_continuous_scale='YIGn',  # Color scale
             labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
             scope='usa'  # Focus on the USA
         )
