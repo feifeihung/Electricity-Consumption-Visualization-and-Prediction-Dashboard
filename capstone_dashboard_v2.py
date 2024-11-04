@@ -487,7 +487,7 @@ if page=="📊Data Visualization":
         bar1(mean_KWH_by_smartspeaker, 'Number_of_Smart_Speaker', 'Number of Smart Speaker', None)
 
 
-elif page=="📈Prediction:    
+elif page=="📈Prediction":    
 	image_path = 'output.png'  # Replace with the actual file path
 	st.image(image_path, caption='Prediction Result', use_column_width=True)
 #------------------------ Household characteristics vs energy consumption------------------------
