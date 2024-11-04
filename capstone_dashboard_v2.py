@@ -29,10 +29,16 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color:#FFDAB9; /* Choose your preferred color here */
+        background-color:#FFDAB9; /* Choose your preferred color here #FFDAB9 */
 	color: black; 
- 
+
     }
+    
+        /* Increase font size and adjust DataFrame styling */
+    .dataframe, .dataframe th, .dataframe td {
+        font-size: 30px; /* Adjust this to your preferred font size */
+        background-color: black; /* Set a background color if desired */
+        padding: 10px; /* Increase padding for better spacing */
 </style>
 """
 
@@ -56,26 +62,16 @@ selectbox_style="""
 	"""
 st.markdown(selectbox_style, unsafe_allow_html=True)
 
-#sidebar_style = """
-#<style>
-#    /* Set background color for the main content */
-#    .stSidebar {
-#        background-color: #D95F1A; /* Choose your preferred color here */
-#	color: #FAFAFA !important;  
-#    }
-#</style>
-#"""
-
 
 sidebar_style = """
 <style>
     /* Set sidebar background color */
     .stSidebar {
-        background-color: #D95F1A; /* Sidebar background color */
+        background-color: #D95F1A; color: #FAFAFA !important/* Sidebar background color */
     }
     /* Ensure all text in the sidebar is white */
     .stSidebar, .stSidebar * {
-        color: #FAFAFA !important; /* Set all text in sidebar to white */
+        color: #FAFAFA !important; font-size: 25px /* Set all text in sidebar to white */
     }
     /* Specifically target radio button labels */
     div[role="radiogroup"] label {
@@ -83,7 +79,7 @@ sidebar_style = """
 	font-size: 44px !important; font-weight: bold;/* Force radio button text to white */
     }
     div[role="radiogroup"] {
-        font-size: 44px !important; padding: 5px; font-weight: bold;/* This affects the entire radio group, including labels */
+        font-size: 35px !important; padding: 5px; font-weight: bold;/* This affects the entire radio group, including labels */
     }
 </style>
 """
@@ -91,8 +87,8 @@ sidebar_style = """
 st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
-	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 25px '> Select a Sector </h1>", unsafe_allow_html=True)
-	page=st.sidebar.radio('',["Data Visualization", "Prediction"])
+	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 35px '> Select a Sector </h1>", unsafe_allow_html=True)
+	page=st.sidebar.radio('',["📊Data Visualization", "📈Prediction"])
 
 
 
