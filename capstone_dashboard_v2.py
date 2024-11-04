@@ -470,8 +470,8 @@ if page=="📊Data Visualization":
                                  max_value=max(mean_KWH_by_state.Average_KWH),
                              )}
                          ,use_container_width=True)
-            st.subheader("Average Household Electricity Consumption by State")
-            st.dataframe(mean_KWH_by_state, use_container_width=True)
+            #st.subheader("Average Household Electricity Consumption by State")
+            #st.dataframe(mean_KWH_by_state, use_container_width=True)
 
         bar1(mean_KWH_by_Urbantype, 'Urban_type', 'Urban Type', urban_type_order)
 
