@@ -346,7 +346,7 @@ def bar1(data,x, title,category_orders):
         bargap=0.2,
 
     )
-    c1,c2=st.columns(2)
+    c1, c2 = st.columns((3, 1.5), gap='medium')
     with c1:
         st.plotly_chart(fig)
     with c2:
@@ -452,7 +452,7 @@ if page=="📊Data Visualization":
         with c1:
             st.plotly_chart(fig, use_container_width=True)
         with c2:	
-		mean_KWH_by_state = mean_KWH_by_state.sort_values(by='Average_KWH', ascending=False)
+	    mean_KWH_by_state = mean_KWH_by_state.sort_values(by='Average_KWH', ascending=False)
             st.markdown('#### Top States')
 
             st.dataframe(mean_KWH_by_state,
