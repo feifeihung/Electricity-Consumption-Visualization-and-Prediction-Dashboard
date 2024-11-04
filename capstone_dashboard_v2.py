@@ -412,11 +412,8 @@ def boxplot(data,x,y,title,category_orders):
 #=========================================================================================================
 #st.sidebar.title('Choose Sector')
 #page=st.sidebar.radio(['','Data Visualization', 'Prediction'])
-if page=='Prediction':    
-	image_path = 'output.png'  # Replace with the actual file path
-	st.image(image_path, caption='Prediction Result', use_column_width=True)
 
-elif page=='Data Visualization':
+if page==📊Data Visualization":
     option = st.selectbox(
         label='Critical Features for Household Electricity Consumption',
         options=['Location', 'Weather', 'House Conditions', 'Household Characteristics', 'Appliances'])
@@ -490,6 +487,9 @@ elif page=='Data Visualization':
         bar1(mean_KWH_by_smartspeaker, 'Number_of_Smart_Speaker', 'Number of Smart Speaker', None)
 
 
+elif page=="📈Prediction:    
+	image_path = 'output.png'  # Replace with the actual file path
+	st.image(image_path, caption='Prediction Result', use_column_width=True)
 #------------------------ Household characteristics vs energy consumption------------------------
 
 
