@@ -452,8 +452,8 @@ if page=="📊Data Visualization":
         with c1:
             st.plotly_chart(fig, use_container_width=True)
         with c2:
-		mean_KWH_by_state = mean_KWH_by_state.sort_values(by='Average_KWH', ascending=False)            
-		st.markdown('#### Top States')
+            mean_KWH_by_state = mean_KWH_by_state.sort_values(by='Average_KWH', ascending=False)
+            st.markdown('#### Top States')
 
             st.dataframe(mean_KWH_by_state,
                          column_order=("State", "Average_KWH"),
