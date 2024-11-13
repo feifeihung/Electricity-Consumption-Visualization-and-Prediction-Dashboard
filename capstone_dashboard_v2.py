@@ -523,10 +523,10 @@ elif page=='📈Prediction':
 
     # %%
     import pandas as pd
-    import warnings
+    #import warnings
     import joblib
 
-    warnings.filterwarnings("ignore")
+    #warnings.filterwarnings("ignore")
 
     model = joblib.load('xgb.joblib')
     df = pd.read_csv('recs2020_public_v7.csv')
