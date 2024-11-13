@@ -523,10 +523,10 @@ elif page=='📈Prediction':
 
     # %%
     import pandas as pd
-    #import warnings
+    import warnings
     import joblib
 
-    #warnings.filterwarnings("ignore")
+    warnings.filterwarnings("ignore")
 
     model = joblib.load('xgb.joblib')
     df = pd.read_csv('recs2020_public_v7.csv')
@@ -586,14 +586,47 @@ elif page=='📈Prediction':
         prediction = model.predict(input_data_df)
         #st.write("Predicted Electricity Consumption (KWH):", prediction[0])
 
-        st.markdown(
-            f"""
-                    <div style="font-size:20px; color:#EB5406; font-weight: bold; font-style: italic; ">
-                        Predicted Household Electricity Consumption (KWH): {prediction[0]}
-                    </div>
-                    """,
-            unsafe_allow_html=True
+        #st.markdown(
+        #    f"""
+        #            <div style="font-size:20px; color:#EB5406; font-weight: bold; font-style: italic; ">
+        #                Predicted Household Electricity Consumption (KWH): {prediction[0]}
+        #            </div>
+        #            """,
+        #    unsafe_allow_html=True
+        #)
+        average_state=df[df['state_name'] == state_name]['KWH'].mean()
+        average=df['KWH'].mean()
+
+        labels = ['You', 'Average State Household', 'Average U.S. Household' ]
+        values = [prediction[0], average_state, average ]
+        fig = px.bar(
+            x=labels,
+            y=values,
+            color=labels,
+            labels={'x': 'Categories', 'y': 'Values'},
+            title="Comparison of Household Energy Consumption"
         )
+        fig.update_layout(
+            xaxis_title="Categories",
+            yaxis_title="Electricity Consumption (KWH)",
+            title_font_size=20
+        )
+
+
+        #st.pyplot(fig)
+
+        c1, c2 = st.columns((1, 1), gap='medium')
+        with c2:
+            st.plotly_chart(fig)
+        with c1:
+            st.markdown(
+                f"""
+                                <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
+                                    Predicted Household Electricity Consumption (KWH): {prediction[0]}
+                                </div>
+                                """,
+                unsafe_allow_html=True
+            )
 
 
 
