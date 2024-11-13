@@ -523,7 +523,7 @@ elif page=='📈Prediction':
 
     # %%
     import pandas as pd
-    #import warnings
+    import warnings
     import joblib
 
     warnings.filterwarnings("ignore")
