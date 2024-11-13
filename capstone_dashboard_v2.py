@@ -1,5 +1,6 @@
 import os
 from itertools import groupby
+from pickle import FALSE
 
 import streamlit as st
 import pandas as pd
@@ -9,6 +10,8 @@ import matplotlib.pyplot as plt
 import json
 import seaborn as sns
 import plotly.graph_objects as go
+import joblib
+import sklearn
 
 
 
@@ -31,7 +34,6 @@ background_style = """
     .stApp {
         background-color:#FFDAB9; /* Choose your preferred color here #FFDAB9 */
 	color: black; 
-
     }
     
         /* Increase font size and adjust DataFrame styling */
@@ -63,6 +65,7 @@ selectbox_style="""
 st.markdown(selectbox_style, unsafe_allow_html=True)
 
 
+
 sidebar_style = """
 <style>
     /* Set sidebar background color */
@@ -88,7 +91,11 @@ st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
 	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 35px '> Select a Sector </h1>", unsafe_allow_html=True)
+#data_viz_button = st.sidebar.button("Data Visualization",use_container_width=False,icon="🚨",on_click=callable,)
+#prediction_button = st.sidebar.button("Prediction",use_container_width=False,icon="🚨",on_click=callable,)
+
 	page=st.sidebar.radio('',["📊Data Visualization", "📈Prediction"])
+
 
 
 
@@ -346,6 +353,7 @@ def bar1(data,x, title,category_orders):
         bargap=0.2,
 
     )
+    #c1,c2=st.columns(2)
     c1, c2 = st.columns((3, 1.5), gap='medium')
     with c1:
         st.plotly_chart(fig)
@@ -412,8 +420,10 @@ def boxplot(data,x,y,title,category_orders):
 #=========================================================================================================
 #st.sidebar.title('Choose Sector')
 #page=st.sidebar.radio(['','Data Visualization', 'Prediction'])
+import pickle
 
-if page=="📊Data Visualization":
+
+if page=='📊Data Visualization':
     option = st.selectbox(
         label='Critical Features for Household Electricity Consumption',
         options=['Location', 'Weather', 'House Conditions', 'Household Characteristics', 'Appliances'])
@@ -431,7 +441,7 @@ if page=="📊Data Visualization":
             color='Average_KWH',  # Column to use for color scale
             hover_name='State',  # Hover data: state names
             hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-            color_continuous_scale='Viridis',  # Color scale
+            color_continuous_scale='RdBu',  # Color scale
             labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
             scope='usa'  # Focus on the USA
         )
@@ -448,9 +458,10 @@ if page=="📊Data Visualization":
         )
 
         # Display the map in Streamlit
+
         c1, c2 = st.columns((3, 1.5), gap='medium')
         with c1:
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=False)
         with c2:
             mean_KWH_by_state = mean_KWH_by_state.sort_values(by='Average_KWH', ascending=False)
             st.markdown('#### Top States')
@@ -470,8 +481,8 @@ if page=="📊Data Visualization":
                                  max_value=max(mean_KWH_by_state.Average_KWH),
                              )}
                          ,use_container_width=True)
-            #st.subheader("Average Household Electricity Consumption by State")
-            #st.dataframe(mean_KWH_by_state, use_container_width=True)
+#            st.subheader("Average Household Electricity Consumption by State")
+#            st.dataframe(mean_KWH_by_state, use_container_width=True)
 
         bar1(mean_KWH_by_Urbantype, 'Urban_type', 'Urban Type', urban_type_order)
 
@@ -505,16 +516,94 @@ if page=="📊Data Visualization":
         bar1(mean_KWH_by_smartspeaker, 'Number_of_Smart_Speaker', 'Number of Smart Speaker', None)
 
 
-elif page=="📈Prediction":    
-	image_path = 'output.png'  # Replace with the actual file path
-	st.image(image_path, caption='Prediction Result', use_column_width=True)
-#------------------------ Household characteristics vs energy consumption------------------------
+#------------------------------------------Prediction------------------------------------------
+
+elif page=='📈Prediction':
+    # %%
+
+    # %%
+    import pandas as pd
+    import warnings
+    import joblib
+
+    warnings.filterwarnings("ignore")
+
+    model = joblib.load('xgb.joblib')
+    df = pd.read_csv('recs2020_public_v7.csv')
+    final_data = pd.read_csv('processed_data.csv')
+    state_name = st.selectbox('State',['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+                                       'Colorado', 'Connecticut', 'Delaware', 'District of Columbia',
+                                       'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana',
+                                       'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland','Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri',
+                                       'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+                                       'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+                                       'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South', 'Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+                                       'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'])
+    df2 = final_data[final_data['state_name'] == state_name]
+    region = df2['REGIONC'].unique()[0]
+    statepostal = df2['state_postal'].unique()[0]
+    division = df2['DIVISION'].unique()[0]
+    statefip = df2['STATE_FIPS'].unique()[0]
+    climate = df2['BA_climate'].unique()[0]
+    IECCclimatecode = df2['IECC_climate_code'].unique()[0]
+    uatype = st.selectbox('Urban Type',['U','C','R'])
+    TOTROOMS=st.number_input('Rooms', min_value=1, max_value=20, step=1)
+    MONEYPY=st.number_input('Income Level', min_value=1, max_value=16, step=1)
+    NUMFRIG=st.number_input('Number of Refrigerators Used', min_value=0, max_value=9, step=1)
+
+    input_data = {
+        'REGIONC': [region],
+        'state_postal': [statepostal],
+        'BA_climate': [climate],
+        'UATYP10': [uatype],
+        'DIVISION': [division],
+        'state_name': [state_name],
+        'STATE_FIPS': [statefip],
+        'IECC_climate_code': [IECCclimatecode],
+        'TOTROOMS': [TOTROOMS],
+        'MONEYPY': [MONEYPY],
+        'NUMFRIG':[NUMFRIG]
+    }
+
+    mean_values = df2.mean(numeric_only=True)
+
+
+    def inputdata(state_name):
+        df2 = final_data[final_data['state_name'] == state_name]
+        mean_values = df2.mean(numeric_only=True)
+        for feature in mean_values.index:
+            if feature not in input_data:
+                input_data[feature] = [mean_values[feature]]
+        return input_data
+
+
+    inputdata(state_name)
+    input_data_df = pd.DataFrame(input_data)
+
+
+    # Make the prediction
+    if st.button("Predict",type='primary'):
+        prediction = model.predict(input_data_df)
+        #st.write("Predicted Electricity Consumption (KWH):", prediction[0])
+
+        st.markdown(
+            f"""
+                    <div style="font-size:20px; color:#EB5406; font-weight: bold; font-style: italic; ">
+                        Predicted Household Electricity Consumption (KWH): {prediction[0]}
+                    </div>
+                    """,
+            unsafe_allow_html=True
+        )
 
 
 
 
 
-#(2) Annual gross household income
+
+
+    
+    
+        
 
 
 
@@ -522,5 +611,9 @@ elif page=="📈Prediction":
 
 
 
-#------------------------ Appliances vs energy consumption------------------------
-#(1)
+
+
+
+
+
+
