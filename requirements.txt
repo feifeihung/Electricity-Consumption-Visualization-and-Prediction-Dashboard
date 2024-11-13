@@ -8,6 +8,5 @@ jsonschema-specifications
 seaborn
 matplotlib
 joblib
-scikit-learn==1.3.2
 warnings
-
+scikit-learn==1.3.2
