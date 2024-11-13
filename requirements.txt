@@ -7,3 +7,4 @@ jsonschema
 jsonschema-specifications
 seaborn
 matplotlib
+joblib
