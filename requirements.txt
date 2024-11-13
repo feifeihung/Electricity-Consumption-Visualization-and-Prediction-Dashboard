@@ -2,6 +2,7 @@ streamlit
 pandas
 altair
 plotly.express
+plotly
 geojson
 jsonschema
 jsonschema-specifications
