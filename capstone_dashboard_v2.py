@@ -64,6 +64,20 @@ selectbox_style="""
 	"""
 st.markdown(selectbox_style, unsafe_allow_html=True)
 
+selectnumber_style="""
+	<style>
+	.stNumberInput >div > input {
+        height: 180% !important;
+        padding: 5px;
+        font-family: 'Arial' !important;
+        border: 2px solid #be0051 !important;
+        font-weight: bold;
+        font-size: 20px;
+    }
+	</style>
+	"""
+st.markdown(selectnumber_style, unsafe_allow_html=True)
+
 
 
 sidebar_style = """
@@ -547,9 +561,13 @@ elif page=='📈Prediction':
     climate = df2['BA_climate'].unique()[0]
     IECCclimatecode = df2['IECC_climate_code'].unique()[0]
     uatype = st.selectbox('Urban Type',['U','C','R'])
-    TOTROOMS=st.number_input('Rooms', min_value=1, max_value=20, step=1)
-    MONEYPY=st.number_input('Income Level', min_value=1, max_value=16, step=1)
-    NUMFRIG=st.number_input('Number of Refrigerators Used', min_value=0, max_value=9, step=1)
+    SQFTEST = st.number_input('House Size(square feet)',value=None,placeholder="Enter the square feet of your house")  # enter value
+    TOTROOMS=st.selectbox('Number of Rooms', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+    YEARMADERANGE=st.selectbox('House Age', [1, 2, 3, 4,5,6,7,8,9])
+    ELWATER=st.selectbox('Electricity Used for Water Heating',[0,1])#
+    FUELHEAT=st.selectbox('Space Heating Fuel',[1, 2, 3, 5, 7,99,-2])#
+    NHSLDMEM=st.selectbox('Number of Household Members', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15])
+    MONEYPY = st.selectbox('Income Level', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16])#
 
     input_data = {
         'REGIONC': [region],
@@ -562,7 +580,11 @@ elif page=='📈Prediction':
         'IECC_climate_code': [IECCclimatecode],
         'TOTROOMS': [TOTROOMS],
         'MONEYPY': [MONEYPY],
-        'NUMFRIG':[NUMFRIG]
+        'YEARMADERANGE':[YEARMADERANGE],
+        'SQFTEST':[SQFTEST],
+        'NHSLDMEM': [NHSLDMEM],
+        'ELWATER': [ELWATER],
+        'FUELHEAT': [FUELHEAT]
     }
 
     mean_values = df2.mean(numeric_only=True)
@@ -622,7 +644,7 @@ elif page=='📈Prediction':
             st.markdown(
                 f"""
                                 <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
-                                    Predicted Household Electricity Consumption (KWH): {prediction[0]}
+                                    Predicted Household Electricity Consumption (kWh): {prediction[0]}
                                 </div>
                                 """,
                 unsafe_allow_html=True
