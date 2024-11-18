@@ -32,7 +32,7 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color:#000000; /* Choose your preferred color here #FFDAB9 */
+        background-color:#000000; primaryColor="#FF4B4B" /* Choose your preferred color here #FFDAB9 */
 	color: black; 
     }
     ##FFDAB9
