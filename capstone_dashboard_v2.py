@@ -32,10 +32,10 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color:#FFDAB9; /* Choose your preferred color here #FFDAB9 */
+        background-color:#000000; /* Choose your preferred color here #FFDAB9 */
 	color: black; 
     }
-    
+    ##FFDAB9
         /* Increase font size and adjust DataFrame styling */
     .dataframe, .dataframe th, .dataframe td {
         font-size: 30px; /* Adjust this to your preferred font size */
@@ -49,7 +49,7 @@ background_style = """
 # Apply the CSS style
 st.markdown(background_style, unsafe_allow_html=True)
 
-st.markdown("<h1 style= 'text-align:center; color:#8a2424;  '>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
+st.markdown("<h1 style= 'text-align:center; color:white;  '>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
 st.markdown('Data Source: EIA')
 
@@ -543,8 +543,35 @@ elif page=='📈Prediction':
     warnings.filterwarnings("ignore")
 
     model = joblib.load('xgb.joblib')
+    scaler = joblib.load('scaler.joblib')
     df = pd.read_csv('recs2020_public_v7.csv')
     final_data = pd.read_csv('processed_data.csv')
+
+    #selected_features = ['REGIONC', 'DIVISION', 'STATE_FIPS', 'state_postal', 'state_name', 'BA_climate',
+    #                     'IECC_climate_code', 'UATYP10', 'HDD65', 'CDD65', 'CDD30YR_PUB', 'CRAWL',
+    #                     'YEARMADERANGE', 'BEDROOMS', 'OTHROOMS', 'TOTROOMS', 'WALLTYPE', 'ROOFTYPE',
+    #                     'DOOR1SUM', 'WINDOWS', 'ORIGWIN', 'WINFRAME', 'TREESHAD', 'ADQINSUL', 'MONPOOL',
+    #                     'NUMFRIG', 'TYPERFR1', 'AGERFRI1', 'SIZRFRI2', 'UPRTFRZR', 'SIZFREEZ', 'AGEFRZR',
+    #                     'RCOOKUSE', 'ROVENUSE', 'AMTMICRO', 'OUTGRILLFUEL', 'NUMMEAL', 'TOAST', 'CROCKPOT',
+    #                     'DWASHUSE', 'DWCYCLE', 'AGEDW', 'WASHLOAD', 'AGECWASH', 'DRYRUSE', 'AGECDRYER',
+    #                     'TVCOLOR', 'TVTYPE1', 'TVUSE1', 'TVONWD1', 'TVONWE1', 'TVSIZE2', 'TVUSE2', 'TVONWD2',
+    #                     'TVONWE2', 'TVONWD3', 'TVONWE3', 'CABLESAT', 'COMBODVR', 'INTSTREAM', 'PLAYSTA',
+    #                     'DVD', 'DESKTOP', 'NUMLAPTOP', 'NUMTABLET', 'NUMSMPHONE', 'INTYPEBROAD', 'SMARTSPK',
+    #                     'EQUIPM', 'FUELHEAT', 'EQUIPAGE', 'GEOHP', 'EQUIPAUXTYPE', 'USEEQUIPAUX', 'NUMPORTEL',
+    #                     'ACEQUIPAGE', 'NUMCFAN', 'NUMFLOORFAN', 'HEATCNTL', 'TEMPHOME', 'TEMPGONE', 'TEMPNITE',
+    #                     'H2OMAIN', 'WHEATSIZ', 'WHEATAGE', 'ELWATER', 'LGTIN1TO4', 'LGTIN4TO8', 'LGTINMORE8',
+    #                     'LGTINLED', 'LGTINCFL', 'LGTINCAN', 'LGTOUTNITE', 'SMARTMETER', 'HHSEX', 'HHAGE',
+    #                     'EMPLOYHH', 'EDUCATION', 'NHSLDMEM', 'NUMCHILD', 'NUMADULT1', 'MONEYPY', 'SQFTEST',
+    #                     'TOTSQFT_EN', 'TOTHSQFT', 'TOTCSQFT', 'NWEIGHT3', 'NWEIGHT9', 'NWEIGHT10', 'NWEIGHT12',
+    #                     'NWEIGHT27', 'NWEIGHT39', 'NWEIGHT41', 'NWEIGHT45', 'NWEIGHT54', 'NWEIGHT55', 'NWEIGHT57',
+    #                     'NWEIGHT60', 'KWHSPH', 'KWHCOL', 'KWHWTH', 'KWHRFG', 'KWHRFG1', 'KWHRFG2', 'KWHFRZ', 'KWHCOK',
+    #                     'KWHMICRO', 'KWHCW', 'KWHCDR', 'KWHDWH', 'KWHLGT', 'KWHTVREL', 'KWHTV1', 'KWHTV2', 'KWHTV3',
+    #                     'KWHAHUHEAT', 'KWHAHUCOL', 'KWHCFAN', 'KWHDHUM', 'KWHHUM', 'KWHPLPMP', 'KWHHTBPMP',
+    #                     'KWHHTBHEAT', 'KWHEVCHRG', 'KWHNEC', 'KWHOTH', 'CUFEETNG', 'CUFEETNGSPH', 'CUFEETNGWTH',
+    #                     'CUFEETNGCOK', 'CUFEETNGNEC', 'CUFEETNGOTH', 'GALLONLP', 'DBT1', 'DBT99', 'GWT', 'ALLTVFTR',
+    #                     'ALLOFFFTR', 'ALLTELFTR']
+
+
     state_name = st.selectbox('State',['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
                                        'Colorado', 'Connecticut', 'Delaware', 'District of Columbia',
                                        'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana',
@@ -553,6 +580,16 @@ elif page=='📈Prediction':
                                        'New Mexico', 'New York', 'North Carolina', 'North Dakota',
                                        'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South', 'Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
                                        'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'])
+
+    #categorical_features = ['REGIONC', 'DIVISION', 'state_postal', 'state_name', 'BA_climate',
+    #   'IECC_climate_code', 'UATYP10']  # Subset of selected_features
+    #numeric_features= [f for f in selected_features if f not in categorical_features]
+    #numeric_scaled_data = scaler.transform(final_data[numeric_features])
+    #numeric_scaled_df = pd.DataFrame(numeric_scaled_data, columns=numeric_features)
+    #categorical_data = final_data[categorical_features]
+    #processed_data = pd.concat([numeric_scaled_df, categorical_data.reset_index(drop=True)], axis=1)
+
+    #df2 = processed_data[processed_data['state_name'] == state_name]
     df2 = final_data[final_data['state_name'] == state_name]
     region = df2['REGIONC'].unique()[0]
     statepostal = df2['state_postal'].unique()[0]
@@ -560,14 +597,88 @@ elif page=='📈Prediction':
     statefip = df2['STATE_FIPS'].unique()[0]
     climate = df2['BA_climate'].unique()[0]
     IECCclimatecode = df2['IECC_climate_code'].unique()[0]
-    uatype = st.selectbox('Urban Type',['U','C','R'])
+
+    uatype = st.selectbox('Urban Type',['Urban','Rural','Urban Cluster'])
     SQFTEST = st.number_input('House Size(square feet)',value=None,placeholder="Enter the square feet of your house")  # enter value
     TOTROOMS=st.selectbox('Number of Rooms', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
-    YEARMADERANGE=st.selectbox('House Age', [1, 2, 3, 4,5,6,7,8,9])
-    ELWATER=st.selectbox('Electricity Used for Water Heating',[0,1])#
-    FUELHEAT=st.selectbox('Space Heating Fuel',[1, 2, 3, 5, 7,99,-2])#
-    NHSLDMEM=st.selectbox('Number of Household Members', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15])
-    MONEYPY = st.selectbox('Income Level', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16])#
+
+    #YEARMADERANGE_mapping = {
+    #    'Before 1950': '1',
+    #    '1950 to 1959': '2',
+    #    '1960 to 1969': '3',
+    #    '1970 to 1979': '4',
+    #    '1980 to 1989': '5',
+    #    '1990 to 1999': '6',
+    #    '2000 to 2009': '7',
+    #    '2010 to 2015': '8',
+    #    '2016 to 2020': '9',
+    #}
+    #YEARMADERANGE = st.selectbox('House Age',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
+    #     '1990 to 1999', '2000 to 2009', '2010 to 2015', '2016 to 2020'])
+    #YEARMADERANGE_numeric = YEARMADERANGE_mapping[YEARMADERANGE]
+    #ELWATER=st.selectbox('Electricity Used for Water Heating',[1,0])#
+    ELWATER_mapping = {
+        'Yes': '1',
+        'No': '0',
+    }
+    ELWATER = st.selectbox('Electricity Used for Water Heating',['Yes','No'])
+    ELWATER_numeric = ELWATER_mapping[ELWATER]
+
+    #FUELHEAT=st.selectbox('Space Heating Fuel',[1,2,3,5,7,99,-2])#
+    FUELHEAT_mapping = {
+        'Electricity':'5',
+        'Natural gas from underground pipes': '1',
+        'Propane (bottled gas)':'2',
+        'Fuel oil': '3',
+        'Wood or pellets': '7',
+        'Other': '99',
+        'Not applicable': '-2',
+    }
+    FUELHEAT = st.selectbox('Space Heating Fuel', ['Electricity', 'Natural gas from underground pipes',
+                                                   'Propane (bottled gas)', 'Fuel oil',
+                                                   'Wood or pellets', 'Other', 'Not applicable'])
+    FUELHEAT_numeric = FUELHEAT_mapping[FUELHEAT]
+
+    TOTCSQFT = st.number_input('Square footage of the housing unit that is cooled by air-conditioning equipment',
+                               value=None, placeholder="Enter the square footage of the housing unit")
+
+    TOTHSQFT= st.number_input('Square footage of the housing unit that is heated by space heating equipment',
+                               value=None, placeholder="Enter the square footage of the housing unit")
+
+    LGTIN1TO4=st.number_input('Number of inside light bulbs turned on 1 to 4 hours per day',value=None,
+                              placeholder="Enter the number of light bulbs")
+
+    #TVCOLOR=st.selectbox('Number of Televisions Used', [1, 2, 3, 4,5,6,7,8,9,10])
+
+    NHSLDMEM=st.selectbox('Number of Household Members', [1, 2, 3, 4,5,6,7,8,9,10])
+    HHAGE=st.number_input('Your age',value=None,placeholder="Enter your age")
+    #MONEYPY = st.selectbox('Income Level', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16])#
+    #MONEYPY_mapping = {
+    #    'Less than $5,000': '1',
+    #    '$5,000 - $7,499': '2',
+    #    '$7,500 - $9,999': '3',
+    #    '$10,000 - $12,499': '4',
+    #    '$12,500 - $14,999': '5',
+    #    '$15,000 - $19,999': '6',
+    #    '$20,000 - $24,999': '7',
+    #    '$25,000 - $29,999': '8',
+    #    '$30,000 - $34,999': '9',
+    #    '$35,000 - $39,999': '10',
+    #    '$40,000 - $49,999': '11',
+    #    '$50,000 - $59,999': '12',
+    #    '$60,000 - $74,999': '13',
+    #    '$75,000 - $99,999': '14',
+    #    '$100,000 - $149,999': '15',
+    #    '$150,000 or more': '16',
+    #}
+    #MONEYPY = st.selectbox('Income Level', ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999',
+    #                                        '$10,000 - $12,499', '$12,500 - $14,999', '$15,000 - $19,999',
+    #                                        '$20,000 - $24,999', '$25,000 - $29,999',
+    #                                        '$30,000 - $34,999', '$35,000 - $39,999',
+    #                                        '$40,000 - $49,999', '$50,000 - $59,999',
+    #                                        '$60,000 - $74,999', '$75,000 - $99,999',
+    #                                        '$100,000 - $149,999', '$150,000 or more'])
+    #MONEYPY_numeric = MONEYPY_mapping[MONEYPY]
 
     input_data = {
         'REGIONC': [region],
@@ -579,18 +690,24 @@ elif page=='📈Prediction':
         'STATE_FIPS': [statefip],
         'IECC_climate_code': [IECCclimatecode],
         'TOTROOMS': [TOTROOMS],
-        'MONEYPY': [MONEYPY],
-        'YEARMADERANGE':[YEARMADERANGE],
+        #'MONEYPY': [MONEYPY_numeric],
+        #'YEARMADERANGE':[YEARMADERANGE_numeric],
         'SQFTEST':[SQFTEST],
         'NHSLDMEM': [NHSLDMEM],
-        'ELWATER': [ELWATER],
-        'FUELHEAT': [FUELHEAT]
+        'ELWATER': [ELWATER_numeric],
+        'FUELHEAT': [FUELHEAT_numeric],
+        'TOTCSQFT': [TOTCSQFT],
+        'TOTHSQFT': [TOTHSQFT],
+        'LGTIN1TO4': [LGTIN1TO4],
+        #'TVCOLOR': [TVCOLOR],
+        'HHAGE': [HHAGE]
     }
 
-    mean_values = df2.mean(numeric_only=True)
+
 
 
     def inputdata(state_name):
+        #df2 = processed_data[processed_data['state_name'] == state_name]
         df2 = final_data[final_data['state_name'] == state_name]
         mean_values = df2.mean(numeric_only=True)
         for feature in mean_values.index:
