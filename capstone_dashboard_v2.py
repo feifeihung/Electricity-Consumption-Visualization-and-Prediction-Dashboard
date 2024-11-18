@@ -652,33 +652,7 @@ elif page=='📈Prediction':
 
     NHSLDMEM=st.selectbox('Number of Household Members', [1, 2, 3, 4,5,6,7,8,9,10])
     HHAGE=st.number_input('Your age',value=None,placeholder="Enter your age")
-    #MONEYPY = st.selectbox('Income Level', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16])#
-    #MONEYPY_mapping = {
-    #    'Less than $5,000': '1',
-    #    '$5,000 - $7,499': '2',
-    #    '$7,500 - $9,999': '3',
-    #    '$10,000 - $12,499': '4',
-    #    '$12,500 - $14,999': '5',
-    #    '$15,000 - $19,999': '6',
-    #    '$20,000 - $24,999': '7',
-    #    '$25,000 - $29,999': '8',
-    #    '$30,000 - $34,999': '9',
-    #    '$35,000 - $39,999': '10',
-    #    '$40,000 - $49,999': '11',
-    #    '$50,000 - $59,999': '12',
-    #    '$60,000 - $74,999': '13',
-    #    '$75,000 - $99,999': '14',
-    #    '$100,000 - $149,999': '15',
-    #    '$150,000 or more': '16',
-    #}
-    #MONEYPY = st.selectbox('Income Level', ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999',
-    #                                        '$10,000 - $12,499', '$12,500 - $14,999', '$15,000 - $19,999',
-    #                                        '$20,000 - $24,999', '$25,000 - $29,999',
-    #                                        '$30,000 - $34,999', '$35,000 - $39,999',
-    #                                        '$40,000 - $49,999', '$50,000 - $59,999',
-    #                                        '$60,000 - $74,999', '$75,000 - $99,999',
-    #                                        '$100,000 - $149,999', '$150,000 or more'])
-    #MONEYPY_numeric = MONEYPY_mapping[MONEYPY]
+    
 
     input_data = {
         'REGIONC': [region],
@@ -690,7 +664,7 @@ elif page=='📈Prediction':
         'STATE_FIPS': [statefip],
         'IECC_climate_code': [IECCclimatecode],
         'TOTROOMS': [TOTROOMS],
-        #'MONEYPY': [MONEYPY_numeric],
+        
         #'YEARMADERANGE':[YEARMADERANGE_numeric],
         'SQFTEST':[SQFTEST],
         'NHSLDMEM': [NHSLDMEM],
