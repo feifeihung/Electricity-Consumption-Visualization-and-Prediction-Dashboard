@@ -543,7 +543,7 @@ elif page=='📈Prediction':
     warnings.filterwarnings("ignore")
 
     model = joblib.load('xgb.joblib')
-    scaler = joblib.load('scaler.joblib')
+    
     df = pd.read_csv('recs2020_public_v7.csv')
     final_data = pd.read_csv('processed_data.csv')
 
