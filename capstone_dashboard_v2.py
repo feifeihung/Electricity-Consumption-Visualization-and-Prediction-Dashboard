@@ -624,7 +624,6 @@ elif page=='📈Prediction':
     ELWATER = st.selectbox('Electricity Used for Water Heating',['Yes','No'])
     ELWATER_numeric = ELWATER_mapping[ELWATER]
 
-    #FUELHEAT=st.selectbox('Space Heating Fuel',[1,2,3,5,7,99,-2])#
     FUELHEAT_mapping = {
         'Electricity':'5',
         'Natural gas from underground pipes': '1',
@@ -663,8 +662,7 @@ elif page=='📈Prediction':
         'state_name': [state_name],
         'STATE_FIPS': [statefip],
         'IECC_climate_code': [IECCclimatecode],
-        'TOTROOMS': [TOTROOMS],
-        
+        'TOTROOMS': [TOTROOMS],        
         #'YEARMADERANGE':[YEARMADERANGE_numeric],
         'SQFTEST':[SQFTEST],
         'NHSLDMEM': [NHSLDMEM],
