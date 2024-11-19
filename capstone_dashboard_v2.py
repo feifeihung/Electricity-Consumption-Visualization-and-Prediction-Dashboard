@@ -536,7 +536,7 @@ elif page=='📈Model':
     #uploaded_file = st.file_uploader("Upload Feature Importance CSV", type="csv")
     data = pd.read_csv("feature_importances.csv")
 
-    top_n = st.slider("Select number of top features to display", 1, 40,5)
+    top_n = st.slider("Select number of top features to display", 1, 40,15)
     data_sorted = data.sort_values(by="importance", ascending=False).head(top_n)
 
     fig = px.bar(
