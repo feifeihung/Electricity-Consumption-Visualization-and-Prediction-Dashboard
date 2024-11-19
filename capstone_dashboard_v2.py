@@ -532,7 +532,7 @@ if page=='📊Data Visualization':
 
 #------------------------------------------Model------------------------------------------
 
-elif page=='📈Model':
+elif page=='💻Model':
     #uploaded_file = st.file_uploader("Upload Feature Importance CSV", type="csv")
     data = pd.read_csv("feature_importances.csv")
 
