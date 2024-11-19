@@ -12,3 +12,4 @@ joblib
 scikit-learn
 xgboost
 Image
+pillow
