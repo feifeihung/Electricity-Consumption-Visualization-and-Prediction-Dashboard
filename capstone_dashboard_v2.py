@@ -550,7 +550,7 @@ elif page=='📈Model':
     fig.update_layout(yaxis={"categoryorder": "total ascending"})  # Order bars by importance
     st.plotly_chart(fig)
 
-    image = Image.open('output1.png')
+    image = Image.open('output1.jpg')
     st.write("Electricity Consumption.")
     st.image(image, caption="Predicted vs Actual", use_container_width=True)
 
