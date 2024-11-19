@@ -11,6 +11,7 @@ import json
 import seaborn as sns
 import plotly.graph_objects as go
 import joblib
+from PIL import Image
 
 
 
@@ -32,7 +33,7 @@ background_style = """
 <style>
     /* Set background color for the main content */
     .stApp {
-        background-color:#000000; primaryColor="#FF4B4B" /* Choose your preferred color here #FFDAB9 */
+        background-color:#000000; /* Choose your preferred color here #FFDAB9 */
 	color: black; 
     }
     ##FFDAB9
@@ -108,7 +109,7 @@ with st.sidebar:
 #data_viz_button = st.sidebar.button("Data Visualization",use_container_width=False,icon="🚨",on_click=callable,)
 #prediction_button = st.sidebar.button("Prediction",use_container_width=False,icon="🚨",on_click=callable,)
 
-	page=st.sidebar.radio('',["📊Data Visualization", "📈Prediction"])
+	page=st.sidebar.radio('',["📊Data Visualization","📈Model", "📈Prediction"])
 
 
 
@@ -529,6 +530,31 @@ if page=='📊Data Visualization':
         bar1(mean_KWH_by_led_portion, 'LED_Portion', 'LED Portion', led_portion_order)
         bar1(mean_KWH_by_smartspeaker, 'Number_of_Smart_Speaker', 'Number of Smart Speaker', None)
 
+#------------------------------------------Model------------------------------------------
+
+elif page=='📈Model':
+    #uploaded_file = st.file_uploader("Upload Feature Importance CSV", type="csv")
+    data = pd.read_csv("feature_importances.csv")
+
+    top_n = st.slider("Select number of top features to display", 1, 40,5)
+    data_sorted = data.sort_values(by="importance", ascending=False).head(top_n)
+
+    fig = px.bar(
+        data_sorted,
+        x="importance",
+        y="feature",
+        orientation="h",
+        title="Top Feature Importances",
+        labels={"importance": "Importance", "feature": "Feature"},
+    )
+    fig.update_layout(yaxis={"categoryorder": "total ascending"})  # Order bars by importance
+    st.plotly_chart(fig)
+
+    image = Image.open('output.png')
+    st.write("Electricity Consumption.")
+    st.image(image, caption="Predicted vs Actual", use_container_width=True)
+
+
 
 #------------------------------------------Prediction------------------------------------------
 
@@ -543,7 +569,7 @@ elif page=='📈Prediction':
     warnings.filterwarnings("ignore")
 
     model = joblib.load('xgb.joblib')
-    
+    scaler = joblib.load('scaler.joblib')
     df = pd.read_csv('recs2020_public_v7.csv')
     final_data = pd.read_csv('processed_data.csv')
 
@@ -624,6 +650,7 @@ elif page=='📈Prediction':
     ELWATER = st.selectbox('Electricity Used for Water Heating',['Yes','No'])
     ELWATER_numeric = ELWATER_mapping[ELWATER]
 
+    #FUELHEAT=st.selectbox('Space Heating Fuel',[1,2,3,5,7,99,-2])#
     FUELHEAT_mapping = {
         'Electricity':'5',
         'Natural gas from underground pipes': '1',
@@ -651,7 +678,33 @@ elif page=='📈Prediction':
 
     NHSLDMEM=st.selectbox('Number of Household Members', [1, 2, 3, 4,5,6,7,8,9,10])
     HHAGE=st.number_input('Your age',value=None,placeholder="Enter your age")
-    
+    #MONEYPY = st.selectbox('Income Level', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16])#
+    #MONEYPY_mapping = {
+    #    'Less than $5,000': '1',
+    #    '$5,000 - $7,499': '2',
+    #    '$7,500 - $9,999': '3',
+    #    '$10,000 - $12,499': '4',
+    #    '$12,500 - $14,999': '5',
+    #    '$15,000 - $19,999': '6',
+    #    '$20,000 - $24,999': '7',
+    #    '$25,000 - $29,999': '8',
+    #    '$30,000 - $34,999': '9',
+    #    '$35,000 - $39,999': '10',
+    #    '$40,000 - $49,999': '11',
+    #    '$50,000 - $59,999': '12',
+    #    '$60,000 - $74,999': '13',
+    #    '$75,000 - $99,999': '14',
+    #    '$100,000 - $149,999': '15',
+    #    '$150,000 or more': '16',
+    #}
+    #MONEYPY = st.selectbox('Income Level', ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999',
+    #                                        '$10,000 - $12,499', '$12,500 - $14,999', '$15,000 - $19,999',
+    #                                        '$20,000 - $24,999', '$25,000 - $29,999',
+    #                                        '$30,000 - $34,999', '$35,000 - $39,999',
+    #                                        '$40,000 - $49,999', '$50,000 - $59,999',
+    #                                        '$60,000 - $74,999', '$75,000 - $99,999',
+    #                                        '$100,000 - $149,999', '$150,000 or more'])
+    #MONEYPY_numeric = MONEYPY_mapping[MONEYPY]
 
     input_data = {
         'REGIONC': [region],
@@ -662,7 +715,8 @@ elif page=='📈Prediction':
         'state_name': [state_name],
         'STATE_FIPS': [statefip],
         'IECC_climate_code': [IECCclimatecode],
-        'TOTROOMS': [TOTROOMS],        
+        'TOTROOMS': [TOTROOMS],
+        #'MONEYPY': [MONEYPY_numeric],
         #'YEARMADERANGE':[YEARMADERANGE_numeric],
         'SQFTEST':[SQFTEST],
         'NHSLDMEM': [NHSLDMEM],
