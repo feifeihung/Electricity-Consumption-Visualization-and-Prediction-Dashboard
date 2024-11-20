@@ -34,7 +34,7 @@ background_style = """
     /* Set background color for the main content */
     .stApp {
         background-color:#000000; /* Choose your preferred color here #FFDAB9 */
-	color: black; 
+	color: white; 
     }
     ##FFDAB9
         /* Increase font size and adjust DataFrame styling */
@@ -155,21 +155,21 @@ mean_KWH_by_Number_of_rooms.columns = ['Number of rooms', 'Average_KWH']
 
 
 #(2) Major outside wall material
-wall_type_mapping = {
-    1: 'Brick',
-    2:'Wood',
-    3: 'Siding(aluminum, fiber cement, vinyl, or steel)',
-    4: 'Stucco',
-    5: 'Shingle(composition)',
-    6: 'Stone',
-    7: 'Concrete block',
-    99: 'Other'
-}
-df['WALLTYPE'] = df['WALLTYPE'].map(wall_type_mapping)
-mean_KWH_by_Wall_type = df.groupby('WALLTYPE')['KWH'].mean().reset_index()
-mean_KWH_by_Wall_type.columns = ['Wall_Type', 'Average_KWH']
-wall_type_order={'Wall_Type':[ 'Brick','Wood', 'Siding(aluminum, fiber cement, vinyl, or steel)',
-    'Stucco', 'Shingle(composition)', 'Stone', 'Concrete block', 'Other']}
+#wall_type_mapping = {
+#    1: 'Brick',
+#    2:'Wood',
+#    3: 'Siding(aluminum, fiber cement, vinyl, or steel)',
+#    4: 'Stucco',
+#    5: 'Shingle(composition)',
+#    6: 'Stone',
+#    7: 'Concrete block',
+#    99: 'Other'
+#}
+#df['WALLTYPE'] = df['WALLTYPE'].map(wall_type_mapping)
+#mean_KWH_by_Wall_type = df.groupby('WALLTYPE')['KWH'].mean().reset_index()
+#mean_KWH_by_Wall_type.columns = ['Wall_Type', 'Average_KWH']
+#wall_type_order={'Wall_Type':[ 'Brick','Wood', 'Siding(aluminum, fiber cement, vinyl, or steel)',
+#    'Stucco', 'Shingle(composition)', 'Stone', 'Concrete block', 'Other']}
 
 #(3) Total energy-consuming area size
 square_footage_mapping = {
@@ -189,6 +189,8 @@ area_size_order={'Square_footage':['Less than 600 square feet', '600 to 799 squa
                                    '800 to 999 square feet', '1,000 to 1,499 square feet',
                                    '1,500 to 1,999 square feet', '2,000 to 2,499 square feet',
                                    '2,500 to 2,999 square feet', '3,000 square feet or more']}
+
+
 
 #(4) Type of housing unit
 housing_unit_type_mapping = {
@@ -320,6 +322,19 @@ mean_KWH_by_thermostat=df.groupby('TYPETHERM')['KWH'].mean().reset_index()
 mean_KWH_by_thermostat.columns=['Thermostat_Type','Average_KWH']
 print(mean_KWH_by_thermostat)
 
+# Summer thermostat setting or temperature in home when someone is home during the day
+COOLCNTL_mapping={1: 'Set one temperature and leave it there most of the time',
+                  2: 'Manually adjust the temperature',
+                  3: 'Programmable or smart thermostat automatically adjusts the temperature',
+                  4: 'Turn equipment on or off as needed',
+                  5: 'Our household does not have control over the temperature',
+                  99: 'Other',
+                  -2: 'Not applicable'}
+df['COOLCNTL']=df['COOLCNTL'].map(COOLCNTL_mapping)
+mean_KWH_by_COOLCNTL=df.groupby('COOLCNTL')['KWH'].mean().reset_index()
+mean_KWH_by_COOLCNTL.columns=['Summer Temperature Control','Average_KWH']
+print(mean_KWH_by_COOLCNTL)
+
 #(3) Number of smart speakers
 
 mean_KWH_by_smartspeaker=df.groupby('SMARTSPK')['KWH'].mean().reset_index()
@@ -333,6 +348,20 @@ df['LGTINLED']=df['LGTINLED'].map(LED_portion_mapping)
 mean_KWH_by_led_portion=df.groupby('LGTINLED')['KWH'].mean().reset_index()
 mean_KWH_by_led_portion.columns=['LED_Portion','Average_KWH']
 led_portion_order={'LED_Portion':['None', 'Some', 'About half', 'Most','All']}
+
+#(5) Number of televisions used
+
+FUELHEAT_mapping={5: 'Electricity',
+                  1: 'Natural gas from underground pipes',
+                  2: 'Propane (bottled gas)',
+                  3: 'Fuel oil',
+                  7: 'Wood or pellets',
+                  99: 'Other',
+                  -2: 'Not applicable'}
+df['FUELHEAT']=df['FUELHEAT'].map(FUELHEAT_mapping)
+mean_KWH_by_FUELHEAT=df.groupby('FUELHEAT')['KWH'].mean().reset_index()
+mean_KWH_by_FUELHEAT.columns=['Space Heating Fuel','Average_KWH']
+
 
 
 #=========================================================================================================
@@ -505,38 +534,51 @@ if page=='📊Data Visualization':
         bar1(mean_KWH_by_Climate, 'Climate_zone', 'Climate Zone', None)
         scatter(df, 'CDD65', 'KWH', 'Cooling Degree Days')
         scatter(df, 'HDD65', 'KWH', 'Heating Degree Days')
+
     elif option == 'House Conditions':
         # hist(mean_KWH_by_Number_of_rooms, 'Number of rooms', 'Number of Rooms')
         bar1(mean_KWH_by_Number_of_rooms, 'Number of rooms', 'Number of Rooms', None)
-        bar1(mean_KWH_by_Wall_type, 'Wall_Type', 'Wall Type', wall_type_order)
+        #bar1(mean_KWH_by_Wall_type, 'Wall_Type', 'Wall Type', wall_type_order)
         bar1(mean_KWH_by_square_footage, 'Square_footage', 'House Square footage', area_size_order)
         bar1(mean_KWH_by_housing_unit_type, 'House Unit Type', 'House Unit Type', None)
         bar1(mean_KWH_by_own_or_rent, 'Own or Rent', 'Own or Rent', None)
+
     elif option == 'Household Characteristics':
         # scatter(df, 'NHSLDMEM', 'KWH', 'Number of household members') #(1) Number of household members
         # scatter(df, 'MONEYPY', 'KWH', 'Annual gross household income')
+        bar1(mean_KWH_by_Number_of_members, 'Number of Members', 'Number of Household Members', None)
         bar2(mean_KWH_by_household_income, 'Annual Gross Household income', 'Annual Gross Household Income',
              income_order)
         boxplot(df, df['MONEYPY'], df['KWH'], 'Annual Gross Household Income', household_income_order)
         data = df[['MONEYPY', 'KWH']]
         st.dataframe(data, use_container_width=True)
-        bar1(mean_KWH_by_Number_of_members, 'Number of Members', 'Number of Household Members', None)
         bar1(mean_KWH_by_Household_education, 'Household_Education_Level', 'Household Education Level', education_order)
         bar1(mean_KWH_by_Household_race, 'Household_Race', 'Household Race', race_order)
         bar1(mean_KWH_by_energy_assistant, 'Energy_Assistant', 'Participating Energy Assistant', None)
+
     elif option == 'Appliances':
         bar2(app_usage, 'Appliances', 'Appliances', None)
+        bar1(mean_KWH_by_FUELHEAT, 'Space Heating Fuel', 'Space Heating Fuel', None)
         bar1(mean_KWH_by_thermostat, 'Thermostat_Type', 'Thermostat Type', None)
+        bar1(mean_KWH_by_COOLCNTL, 'Summer Temperature Control', 'Summer Temperature Control', None)
         bar1(mean_KWH_by_led_portion, 'LED_Portion', 'LED Portion', led_portion_order)
         bar1(mean_KWH_by_smartspeaker, 'Number_of_Smart_Speaker', 'Number of Smart Speaker', None)
+
+
+
+
+
+
+
 
 #------------------------------------------Model------------------------------------------
 
 elif page=='📈Model':
     #uploaded_file = st.file_uploader("Upload Feature Importance CSV", type="csv")
+    st.markdown("The Prediction Model is Xtreme Gradient Boosting (XGB) Model.")
     data = pd.read_csv("feature_importances.csv")
 
-    top_n = st.slider("Select number of top features to display", 1, 40,15)
+    top_n = st.slider("Select number of top features to display", 1, 100,15)
     data_sorted = data.sort_values(by="importance", ascending=False).head(top_n)
 
     fig = px.bar(
@@ -569,7 +611,7 @@ elif page=='📈Prediction':
     warnings.filterwarnings("ignore")
 
     model = joblib.load('xgb.joblib')
-    
+    scaler = joblib.load('scaler.joblib')
     df = pd.read_csv('recs2020_public_v7.csv')
     final_data = pd.read_csv('processed_data.csv')
 
@@ -619,10 +661,13 @@ elif page=='📈Prediction':
     df2 = final_data[final_data['state_name'] == state_name]
     region = df2['REGIONC'].unique()[0]
     statepostal = df2['state_postal'].unique()[0]
+
     division = df2['DIVISION'].unique()[0]
     statefip = df2['STATE_FIPS'].unique()[0]
     climate = df2['BA_climate'].unique()[0]
-    IECCclimatecode = df2['IECC_climate_code'].unique()[0]
+    #IECCclimatecode = df2['IECC_climate_code'].unique()[1]
+    IECCclimatecode=df2[df2['BA_climate'] == climate]['IECC_climate_code'].unique()[0]
+
 
     uatype = st.selectbox('Urban Type',['Urban','Rural','Urban Cluster'])
     SQFTEST = st.number_input('House Size(square feet)',value=None,placeholder="Enter the square feet of your house")  # enter value
@@ -642,23 +687,23 @@ elif page=='📈Prediction':
     #YEARMADERANGE = st.selectbox('House Age',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
     #     '1990 to 1999', '2000 to 2009', '2010 to 2015', '2016 to 2020'])
     #YEARMADERANGE_numeric = YEARMADERANGE_mapping[YEARMADERANGE]
-    
+    #ELWATER=st.selectbox('Electricity Used for Water Heating',[1,0])#
     ELWATER_mapping = {
-        'Yes': '1',
-        'No': '0',
+        'Yes': 1,
+        'No': 0,
     }
     ELWATER = st.selectbox('Electricity Used for Water Heating',['Yes','No'])
     ELWATER_numeric = ELWATER_mapping[ELWATER]
 
-    
+    #FUELHEAT=st.selectbox('Space Heating Fuel',[1,2,3,5,7,99,-2])#
     FUELHEAT_mapping = {
-        'Electricity':'5',
-        'Natural gas from underground pipes': '1',
-        'Propane (bottled gas)':'2',
+        'Electricity':5,
+        'Natural gas from underground pipes': 1,
+        'Propane (bottled gas)':2,
         'Fuel oil': '3',
-        'Wood or pellets': '7',
-        'Other': '99',
-        'Not applicable': '-2',
+        'Wood or pellets': 7,
+        'Other': 99,
+        'Not applicable': -2,
     }
     FUELHEAT = st.selectbox('Space Heating Fuel', ['Electricity', 'Natural gas from underground pipes',
                                                    'Propane (bottled gas)', 'Fuel oil',
@@ -678,33 +723,33 @@ elif page=='📈Prediction':
 
     NHSLDMEM=st.selectbox('Number of Household Members', [1, 2, 3, 4,5,6,7,8,9,10])
     #HHAGE=st.number_input('Your age',value=None,placeholder="Enter your age")
-    
-    MONEYPY_mapping = {
-        'Less than $5,000': '1',
-        '$5,000 - $7,499': '2',
-        '$7,500 - $9,999': '3',
-        '$10,000 - $12,499': '4',
-        '$12,500 - $14,999': '5',
-        '$15,000 - $19,999': '6',
-        '$20,000 - $24,999': '7',
-        '$25,000 - $29,999': '8',
-        '$30,000 - $34,999': '9',
-        '$35,000 - $39,999': '10',
-        '$40,000 - $49,999': '11',
-        '$50,000 - $59,999': '12',
-        '$60,000 - $74,999': '13',
-        '$75,000 - $99,999': '14',
-        '$100,000 - $149,999': '15',
-        '$150,000 or more': '16',
-    }
-    MONEYPY = st.selectbox('Income Level', ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999',
-                                            '$10,000 - $12,499', '$12,500 - $14,999', '$15,000 - $19,999',
-                                            '$20,000 - $24,999', '$25,000 - $29,999',
-                                            '$30,000 - $34,999', '$35,000 - $39,999',
-                                            '$40,000 - $49,999', '$50,000 - $59,999',
-                                            '$60,000 - $74,999', '$75,000 - $99,999',
-                                            '$100,000 - $149,999', '$150,000 or more'])
-    MONEYPY_numeric = MONEYPY_mapping[MONEYPY]
+    #MONEYPY = st.selectbox('Income Level', [1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16])#
+    #MONEYPY_mapping = {
+    #    'Less than $5,000': 1,
+    #    '$5,000 - $7,499': 2,
+    #    '$7,500 - $9,999': 3,
+    #    '$10,000 - $12,499': '4',
+    #    '$12,500 - $14,999': '5',
+    #    '$15,000 - $19,999': '6',
+    #    '$20,000 - $24,999': '7',
+    #    '$25,000 - $29,999': '8',
+    #    '$30,000 - $34,999': '9',
+    #    '$35,000 - $39,999': '10',
+    #    '$40,000 - $49,999': '11',
+    #    '$50,000 - $59,999': '12',
+    #    '$60,000 - $74,999': '13',
+    #    '$75,000 - $99,999': '14',
+    #    '$100,000 - $149,999': '15',
+    #    '$150,000 or more': '16',
+    #}
+    #MONEYPY = st.selectbox('Income Level', ['Less than $5,000', '$5,000 - $7,499', '$7,500 - $9,999',
+    #                                        '$10,000 - $12,499', '$12,500 - $14,999', '$15,000 - $19,999',
+    #                                        '$20,000 - $24,999', '$25,000 - $29,999',
+    #                                        '$30,000 - $34,999', '$35,000 - $39,999',
+    #                                        '$40,000 - $49,999', '$50,000 - $59,999',
+    #                                        '$60,000 - $74,999', '$75,000 - $99,999',
+    #                                        '$100,000 - $149,999', '$150,000 or more'])
+    #MONEYPY_numeric = MONEYPY_mapping[MONEYPY]
 
     input_data = {
         'REGIONC': [region],
@@ -716,7 +761,7 @@ elif page=='📈Prediction':
         'STATE_FIPS': [statefip],
         'IECC_climate_code': [IECCclimatecode],
         'TOTROOMS': [TOTROOMS],
-        'MONEYPY': [MONEYPY_numeric],
+        #'MONEYPY': [MONEYPY_numeric],
         #'YEARMADERANGE':[YEARMADERANGE_numeric],
         'SQFTEST':[SQFTEST],
         'NHSLDMEM': [NHSLDMEM],
@@ -735,7 +780,8 @@ elif page=='📈Prediction':
     def inputdata(state_name):
         #df2 = processed_data[processed_data['state_name'] == state_name]
         df2 = final_data[final_data['state_name'] == state_name]
-        mean_values = df2.mean(numeric_only=True)
+        df3 = df2[df2['BA_climate'] == climate]
+        mean_values = df3.mean(numeric_only=True)
         for feature in mean_values.index:
             if feature not in input_data:
                 input_data[feature] = [mean_values[feature]]
@@ -787,7 +833,7 @@ elif page=='📈Prediction':
             st.markdown(
                 f"""
                                 <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
-                                    Predicted Household Electricity Consumption (kWh): {prediction[0]}
+                                    Predicted Household Electricity Consumption (kWh): {round(prediction[0],4)}
                                 </div>
                                 """,
                 unsafe_allow_html=True
