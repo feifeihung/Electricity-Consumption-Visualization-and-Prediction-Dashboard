@@ -727,6 +727,7 @@ elif page=='📈Prediction':
         unsafe_allow_html=True,
     )
 
+    st.title('Scenario II: Groundwater temperatures rise')
     st.write('Annual average ground water temperature increases 6.3°F')
     # The study, which was published in Nature Geoscience, indicates that by 2100,
     # groundwater temperatures will rise by 6.3°F.
