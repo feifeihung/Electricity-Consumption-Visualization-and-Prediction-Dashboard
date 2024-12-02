@@ -158,21 +158,21 @@ mean_KWH_by_Number_of_rooms.columns = ['Number of rooms', 'Average_KWH']
 
 
 #(2) Major outside wall material
-#wall_type_mapping = {
-#    1: 'Brick',
-#    2:'Wood',
-#    3: 'Siding(aluminum, fiber cement, vinyl, or steel)',
-#    4: 'Stucco',
-#    5: 'Shingle(composition)',
-#    6: 'Stone',
-#    7: 'Concrete block',
-#    99: 'Other'
-#}
-#df['WALLTYPE'] = df['WALLTYPE'].map(wall_type_mapping)
-#mean_KWH_by_Wall_type = df.groupby('WALLTYPE')['KWH'].mean().reset_index()
-#mean_KWH_by_Wall_type.columns = ['Wall_Type', 'Average_KWH']
-#wall_type_order={'Wall_Type':[ 'Brick','Wood', 'Siding(aluminum, fiber cement, vinyl, or steel)',
-#    'Stucco', 'Shingle(composition)', 'Stone', 'Concrete block', 'Other']}
+wall_type_mapping = {
+    1: 'Brick',
+    2:'Wood',
+    3: 'Siding(aluminum, fiber cement, vinyl, or steel)',
+    4: 'Stucco',
+    5: 'Shingle(composition)',
+    6: 'Stone',
+    7: 'Concrete block',
+    99: 'Other'
+}
+df['WALLTYPE'] = df['WALLTYPE'].map(wall_type_mapping)
+mean_KWH_by_Wall_type = df.groupby('WALLTYPE')['KWH'].mean().reset_index()
+mean_KWH_by_Wall_type.columns = ['Wall_Type', 'Average_KWH']
+wall_type_order={'Wall_Type':[ 'Brick','Wood', 'Siding(aluminum, fiber cement, vinyl, or steel)',
+    'Stucco', 'Shingle(composition)', 'Stone', 'Concrete block', 'Other']}
 
 #(3) Total energy-consuming area size
 square_footage_mapping = {
@@ -550,7 +550,7 @@ if page=='📊Data Visualization':
         #bar1(mean_KWH_by_Wall_type, 'Wall_Type', 'Wall Type', wall_type_order)
         bar1(mean_KWH_by_square_footage, 'Square_footage', 'House Square footage', area_size_order)
         bar1(mean_KWH_by_housing_unit_type, 'House Unit Type', 'House Unit Type', None)
-        bar1(mean_KWH_by_own_or_rent, 'Own or Rent', 'Own or Rent', None)
+        bar1(mean_KWH_by_Wall_type, 'Wall_Type', 'Wall Type', wall_type_order)
 
     elif option == 'Household Characteristics':
         # scatter(df, 'NHSLDMEM', 'KWH', 'Number of household members') #(1) Number of household members
@@ -727,9 +727,6 @@ elif page=='📈Prediction':
         unsafe_allow_html=True,
     )
 
-#-----------------------------Scenario II: Rising Groundwater Temperatures------------------------------------
-	
-    st.title('Scenario II: Rising Groundwater Temperature')
     st.write('Annual average ground water temperature increases 6.3°F')
     # The study, which was published in Nature Geoscience, indicates that by 2100,
     # groundwater temperatures will rise by 6.3°F.
@@ -810,9 +807,9 @@ elif page=='📈Prediction':
 
 
 
-#-----------------------------Scenario III: Consumer Behavior Changes------------------------------------
+#-----------------------------Scenario II: Consumer Behavior Changes------------------------------------
 
-    st.title('Scenario II: Consumer Behavior Changes')
+    st.title('Scenario III: Consumer Behavior Changes')
     st.write('Winter thermostat setting in home increases 1 °F (when no one is home during the day)')
     TEMPGONE_1 = df['TEMPGONE'] + 1
     df_02 = df.drop('TEMPGONE', axis=1)
