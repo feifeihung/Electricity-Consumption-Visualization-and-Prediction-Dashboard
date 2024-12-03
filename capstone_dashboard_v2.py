@@ -13,6 +13,8 @@ import seaborn as sns
 import plotly.graph_objects as go
 import joblib
 from PIL import Image
+import warnings
+
 
 
 
@@ -463,15 +465,9 @@ def boxplot(data,x,y,title,category_orders):
 
 
 
-
-
 #=========================================================================================================
 #                                   Select Option
 #=========================================================================================================
-#st.sidebar.title('Choose Sector')
-#page=st.sidebar.radio(['','Data Visualization', 'Prediction'])
-import pickle
-
 
 if page=='📊Data Visualization':
     option = st.selectbox(
@@ -584,9 +580,7 @@ elif page=='📈Prediction':
     prediction_option = st.sidebar.selectbox('choose Model Prediction/Scenario Prediction',
                                          ["Model Prediction", "Scenario Prediction"])
     if prediction_option=="Model Prediction":
-        import pandas as pd
-        import warnings
-        import joblib
+        
         warnings.filterwarnings("ignore")
         model = joblib.load('xgb.joblib')
         final_data = pd.read_csv('final_data.csv')
@@ -615,7 +609,7 @@ elif page=='📈Prediction':
         if climate_zone:
             IECCclimatecode = df2[df2['BA_climate'] == climate_zone]['IECC_climate_code'].unique()[0]
             #st.write(f"IECC Climate Code: {IECCclimatecode}")
-        #IECCclimatecode = df2[df2['BA_climate']==climate_zone][0]
+        
         SQFTEST = st.number_input('House Size(square feet)', value=None,
                                   placeholder="Enter the square feet of your house")  # enter value
         NHSLDMEM = st.selectbox('Number of Household Members', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
@@ -674,16 +668,7 @@ elif page=='📈Prediction':
         # Make the prediction
         if st.button("Predict", type='primary'):
             prediction = model.predict(input_data_df)
-            # st.write("Predicted Electricity Consumption (KWH):", prediction[0])
-
-            # st.markdown(
-            #    f"""
-            #            <div style="font-size:20px; color:#EB5406; font-weight: bold; font-style: italic; ">
-            #                Predicted Household Electricity Consumption (KWH): {prediction[0]}
-            #            </div>
-            #            """,
-            #    unsafe_allow_html=True
-            # )
+            
             average_state = final_data[final_data['state_name'] == state_name]['KWH'].mean()
             average = final_data['KWH'].mean()
 
@@ -702,7 +687,7 @@ elif page=='📈Prediction':
                 title_font_size=20
             )
 
-            # st.pyplot(fig)
+    
 
             c1, c2 = st.columns((1, 1), gap='medium')
             with c2:
@@ -716,13 +701,6 @@ elif page=='📈Prediction':
                                                 """,
                     unsafe_allow_html=True
                 )
-
-
-
-
-
-
-
 
 
 
