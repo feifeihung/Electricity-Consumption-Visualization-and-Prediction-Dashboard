@@ -672,14 +672,14 @@ elif page=='📈Prediction':
             average_state = final_data[final_data['state_name'] == state_name]['KWH'].mean()
             average = final_data['KWH'].mean()
 
-            labels = ['You', 'Average State Household', 'Average U.S. Household']
+            labels = ['Predictive Household', 'Average State Household', 'Average U.S. Household']
             values = [prediction[0], average_state, average]
             fig = px.bar(
                 x=labels,
                 y=values,
                 color=labels,
                 labels={'x': 'Categories', 'y': 'Values'},
-                title="Comparison of Household Energy Consumption"
+                title="Household Energy Consumption"
             )
             fig.update_layout(
                 xaxis_title="Categories",
