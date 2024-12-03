@@ -101,18 +101,21 @@ sidebar_style = """
 	font-size: 44px !important; font-weight: bold;/* Force radio button text to white */
     }
     div[role="radiogroup"] {
-        font-size: 35px !important; padding: 5px; font-weight: bold;/* This affects the entire radio group, including labels */
+        font-size: 25px !important; padding: 5px; font-weight: bold;/* This affects the entire radio group, including labels */
     }
 </style>
 """
-
+alt.themes.enable('dark')
 st.markdown(sidebar_style, unsafe_allow_html=True)
 
 with st.sidebar:
-	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 35px '> Select a Sector </h1>", unsafe_allow_html=True)
+	st.markdown("<h1 style= 'color:#FAFAFA; font-size: 30px '> Select a Sector </h1>", unsafe_allow_html=True)
+
 #data_viz_button = st.sidebar.button("Data Visualization",use_container_width=False,icon="🚨",on_click=callable,)
 #prediction_button = st.sidebar.button("Prediction",use_container_width=False,icon="🚨",on_click=callable,)
 
+
+	#page=st.sidebar.radio('Prediction', options=['📈Model Prediction', '📈Scenario Prediction'])
 	page=st.sidebar.radio('',["📊Data Visualization", "📈Prediction"])
 
 
@@ -576,312 +579,470 @@ if page=='📊Data Visualization':
 
 
 
-
-
-
-
-#------------------------------------------Prediction------------------------------------------
-
+#------------------------------------------Model Prediction------------------------------------------
 elif page=='📈Prediction':
+    prediction_option = st.sidebar.selectbox('choose one',
+                                         ["Model Prediction", "Scenario Prediction"])
+    if prediction_option=="Model Prediction":
+        import pandas as pd
+        import warnings
+        import joblib
+        warnings.filterwarnings("ignore")
+        model = joblib.load('xgb.joblib')
+        final_data = pd.read_csv('final_data.csv')
+        df = final_data.drop('KWH', axis=1)
+
+        state_name = st.selectbox('State', ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+                                            'Colorado', 'Connecticut', 'Delaware', 'District of Columbia',
+                                            'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana',
+                                            'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+                                            'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri',
+                                            'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey',
+                                            'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+                                            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South',
+                                            'Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+                                            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'])
+        df2 = final_data[final_data['state_name'] == state_name]
+        region = df2['REGIONC'].unique()[0]
+        statepostal = df2['state_postal'].unique()[0]
+        division = df2['DIVISION'].unique()[0]
+        statefip = df2['STATE_FIPS'].unique()[0]
+        uatype=df2['UATYP10'].unique()[0]
+        climate = df2['BA_climate'].unique()
+        #IECCclimatecode = df2['IECC_climate_code'].unique()[0]
+
+        climate_zone = st.selectbox('Cilmate_Zone', climate)
+        if climate_zone:
+            IECCclimatecode = df2[df2['BA_climate'] == climate_zone]['IECC_climate_code'].unique()[0]
+            #st.write(f"IECC Climate Code: {IECCclimatecode}")
+        #IECCclimatecode = df2[df2['BA_climate']==climate_zone][0]
+        SQFTEST = st.number_input('House Size(square feet)', value=None,
+                                  placeholder="Enter the square feet of your house")  # enter value
+        NHSLDMEM = st.selectbox('Number of Household Members', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        YEARMADERANGE_mapping = {
+            'Before 1950': '1',
+            '1950 to 1959': '2',
+            '1960 to 1969': '3',
+            '1970 to 1979': '4',
+            '1980 to 1989': '5',
+            '1990 to 1999': '6',
+            '2000 to 2009': '7',
+            '2010 to 2015': '8',
+            '2016 to 2020': '9',
+         }
+        YEARMADERANGE = st.selectbox('House Age',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
+             '1990 to 1999', '2000 to 2009', '2010 to 2015', '2016 to 2020'])
+        YEARMADERANGE_numeric = YEARMADERANGE_mapping[YEARMADERANGE]
+
+        input_data = {
+            'REGIONC': [region],
+            'state_postal': [statepostal],
+            'BA_climate': [climate_zone],
+            'UATYP10': [uatype],
+            'DIVISION': [division],
+            'state_name': [state_name],
+            'STATE_FIPS': [statefip],
+            'IECC_climate_code': [IECCclimatecode],
+            #'TOTROOMS': [TOTROOMS],
+            # 'MONEYPY': [MONEYPY_numeric],
+            'YEARMADERANGE':[YEARMADERANGE_numeric],
+            'SQFTEST': [SQFTEST],
+            'NHSLDMEM': [NHSLDMEM],
+            #'ELWATER': [ELWATER_numeric],
+            #'FUELHEAT': [FUELHEAT_numeric],
+            #'TOTCSQFT': [TOTCSQFT],
+            #'TOTHSQFT': [TOTHSQFT],
+            #'LGTIN1TO4': [LGTIN1TO4],
+            # 'TVCOLOR': [TVCOLOR],
+            #'HHAGE': [HHAGE]
+        }
+
+
+        def inputdata(state_name):
+            # df2 = processed_data[processed_data['state_name'] == state_name]
+            df2 = final_data[final_data['state_name'] == state_name]
+            mean_values = df2.mean(numeric_only=True)
+            for feature in mean_values.index:
+                if feature not in input_data:
+                    input_data[feature] = [mean_values[feature]]
+            return input_data
+
+
+        inputdata(state_name)
+        input_data_df = pd.DataFrame(input_data)
+
+        # Make the prediction
+        if st.button("Predict", type='primary'):
+            prediction = model.predict(input_data_df)
+            # st.write("Predicted Electricity Consumption (KWH):", prediction[0])
+
+            # st.markdown(
+            #    f"""
+            #            <div style="font-size:20px; color:#EB5406; font-weight: bold; font-style: italic; ">
+            #                Predicted Household Electricity Consumption (KWH): {prediction[0]}
+            #            </div>
+            #            """,
+            #    unsafe_allow_html=True
+            # )
+            average_state = final_data[final_data['state_name'] == state_name]['KWH'].mean()
+            average = final_data['KWH'].mean()
+
+            labels = ['You', 'Average State Household', 'Average U.S. Household']
+            values = [prediction[0], average_state, average]
+            fig = px.bar(
+                x=labels,
+                y=values,
+                color=labels,
+                labels={'x': 'Categories', 'y': 'Values'},
+                title="Comparison of Household Energy Consumption"
+            )
+            fig.update_layout(
+                xaxis_title="Categories",
+                yaxis_title="Electricity Consumption (KWH)",
+                title_font_size=20
+            )
+
+            # st.pyplot(fig)
+
+            c1, c2 = st.columns((1, 1), gap='medium')
+            with c2:
+                st.plotly_chart(fig)
+            with c1:
+                st.markdown(
+                    f"""
+                                                <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
+                                                    Predicted Household Electricity Consumption (kWh): {prediction[0]}
+                                                </div>
+                                                """,
+                    unsafe_allow_html=True
+                )
+
+
+
+
+
+
+
+
+
+
+
+
+    # ------------------------------------------Scenario Prediction------------------------------------------
+
+
+    elif prediction_option == "Scenario Prediction":
+        import pandas as pd
+        import warnings
+        import joblib
+
+        warnings.filterwarnings("ignore")
+
+        model = joblib.load('xgb.joblib')
+
+        final_data = pd.read_csv('final_data.csv')
+        df = final_data.drop('KWH', axis=1)
+
+        df_0 = df.drop(columns=['HDD65', 'CDD65'])
+
+        HDD65_1 = df['HDD65'] * 1
+        CDD65_1 = df['CDD65'] * 1
+        df1 = pd.concat([df_0, HDD65_1.rename('HDD65'), CDD65_1.rename('CDD65')], axis=1)
+
+        HDD65_2 = df['HDD65'] * 1.5
+        CDD65_2 = df['CDD65'] * 1.5
+        df2 = pd.concat([df_0, HDD65_2.rename('HDD65'), CDD65_2.rename('CDD65')], axis=1)
+
+        # Make the prediction
+
+        prediction_1 = model.predict(df1)
+        prediction_2 = model.predict(df2)
+
+        labels = ['Max', 'Mean', 'Min']
+        values_1 = [prediction_1.max(), prediction_1.mean(), prediction_1.min()]
+        values_2 = [prediction_2.max(), prediction_2.mean(), prediction_2.min()]
+
+
+        def predic_bar(labels, values):
+            fig = px.bar(
+                x=labels,
+                y=values,
+                color=labels,
+                labels={'x': 'Categories', 'y': 'Values'},
+                title="Predictive Household Electricity Consumption in U.S"
+            )
+            fig.update_layout(
+                xaxis_title="Categories",
+                yaxis_title="Electricity Consumption (KWH)",
+                title_font_size=20,
+                width=800,
+                height=450
+            )
+
+            st.plotly_chart(fig)
+
+
+        df2['KWH'] = prediction_2
+        mean_KWH = df2['KWH'].groupby(df2['state_name']).mean()
+        mean_KWH_by_state_2 = df2['KWH'].groupby(df2['state_name']).mean().reset_index()
+        mean_KWH_by_state_2.columns = ['State', 'Average_KWH']
+
+        geojson_path = 'contiguous-usa.geojson'
+        # https://github.com/ResidentMario/geoplot-data/blob/master/contiguous-usa.geojson
+        with open(geojson_path, encoding='utf8') as f:
+            geojson_data = json.load(f)
+
+        fig = px.choropleth(
+            mean_KWH_by_state_2,
+            geojson=geojson_data,
+            locations='State',  # Column with state names
+            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
+            color='Average_KWH',  # Column to use for color scale
+            hover_name='State',  # Hover data: state names
+            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
+            color_continuous_scale='greens',  # Color scale
+            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
+            scope='usa'  # Focus on the USA
+        )
+
+        # Update the layout of the map
+        fig.update_layout(
+            title_text='Predictive Average Household Electricity Consumption by State',
+            geo=dict(
+                showlakes=True,  # Show lakes
+                lakecolor='rgb(255, 255, 255)'
+            ),
+            coloraxis_colorbar=dict(
+                title="Avg KWH",  # Title of the color bar
+                len=0.8,  # Length of the color bar (50% of map height)
+                thickness=15,  # Thickness in pixels
+                # x=1.05,  # X position (moves it away from the map)
+                # y=0.5,  # Y position (centers it vertically)
+            ),
+            width=800,
+            height=450
+
+        )
+
+        # -----------------------------Scenario I: Surge Climate Change------------------------------------
+
+        st.title('Scenario I: Surge Climate Change')
+        st.write('HDD65 increases 25% and CDD65 increases 25%')
+        # both HDD and CDD have increasing trend: https://www.eia.gov/outlooks/steo/data/browser/#/?v=28&f=A&s=&start=1999&end=2023&chartindexed=2&linechart=ZWCDPUS~ZWHDPUS~&maptype=0&ctype=linechart&map=&id=
+        c1, c2 = st.columns((1, 2), gap='medium')
+        with c1:
+            max_row = df2.loc[df2['KWH'].idxmax()]
+            max_state = max_row['state_name']
+            max_value = max_row['KWH']
+            st.metric(label=f"Max Consumption Household: {max_state}", value=f"{max_value:.2f} kWh")
+            predic_bar(labels, values_2)
+
+        with c2:
+            max_row = mean_KWH_by_state_2.loc[mean_KWH_by_state_2['Average_KWH'].idxmax()]
+            max_state = max_row['State']
+            max_value = max_row['Average_KWH']
+
+            min_row = mean_KWH_by_state_2.loc[mean_KWH_by_state_2['Average_KWH'].idxmin()]
+            min_state = min_row['State']
+            min_value = min_row['Average_KWH']
+            c1, c2 = st.columns((1, 1), gap='medium')
+            with c1:
+                st.metric(label=max_state, value=f"{max_value:.2f} kWh", delta='Max')
+
+            with c2:
+                st.metric(label=min_state, value=f"{min_value:.2f} kWh", delta='Min')
+            st.plotly_chart(fig, use_container_width=False)
+
+        st.write(
+            """
+            <style>
+            [data-testid="stMetric"] {
+                border: 5px solid #959595; /* Add a light grey border */
+                border-radius: 15px;    /* Rounded corners */
+                padding: 10px;         /* Add some padding inside the border */
+                background-color: #ccc; /* Optional: Light background for a better visual effect */
+                font-weight: bold;
+            }
+            [data-testid="stMetricDelta"] svg {
+                display: none; /* Hides the delta arrow */
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.title('Scenario II: Groundwater temperatures rise')
+        st.write('Annual average ground water temperature increases 6.3°F')
+        # The study, which was published in Nature Geoscience, indicates that by 2100,
+        # groundwater temperatures will rise by 6.3°F.
+        # https://www.ngwa.org/detail/news/2024/07/12/study-indicates-groundwater-temperature-increasing-6.3-f-by-2100#:~:text=The%20study%2C%20which%20was%20published,the%20strictest%20drinking%20water%20guidelines.
+        GWT_1 = df['GWT'] + 6.3
+        df_01 = df.drop('GWT', axis=1)
+        df3 = pd.concat([df_01, GWT_1.rename('GWT')], axis=1)
+        prediction_3 = model.predict(df3)
+        labels = ['Max', 'Mean', 'Min']
+        values_3 = [prediction_3.max(), prediction_3.mean(), prediction_3.min()]
+
+        df3['KWH'] = prediction_3
+        mean_KWH_by_state_3 = df3['KWH'].groupby(df3['state_name']).mean().reset_index()
+        mean_KWH_by_state_3.columns = ['State', 'Average_KWH']
+
+        geojson_path = 'contiguous-usa.geojson'
+
+        with open(geojson_path, encoding='utf8') as f:
+            geojson_data = json.load(f)
+
+        fig = px.choropleth(
+            mean_KWH_by_state_3,
+            geojson=geojson_data,
+            locations='State',  # Column with state names
+            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
+            color='Average_KWH',  # Column to use for color scale
+            hover_name='State',  # Hover data: state names
+            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
+            color_continuous_scale='blues',  # Color scale
+            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
+            scope='usa'  # Focus on the USA
+        )
+
+        # Update the layout of the map
+        fig.update_layout(
+            title_text='Predictive Average Household Electricity Consumption by State',
+            geo=dict(
+                showlakes=True,  # Show lakes
+                lakecolor='rgb(255, 255, 255)'
+            ),
+            coloraxis_colorbar=dict(
+                title="Avg KWH",  # Title of the color bar
+                len=0.8,  # Length of the color bar (50% of map height)
+                thickness=15,  # Thickness in pixels
+                # x=1.05,  # X position (moves it away from the map)
+                # y=0.5,  # Y position (centers it vertically)
+            ),
+            width=800,
+            height=450
+
+        )
+        c1, c2 = st.columns((1, 2), gap='medium')
+        with c1:
+            max_row = df3.loc[df3['KWH'].idxmax()]
+            max_state = max_row['state_name']
+            max_value = max_row['KWH']
+            st.metric(label=f"Max Consumption Household: {max_state}", value=f"{max_value:.2f} kWh")
+            predic_bar(labels, values_3)
+
+        with c2:
+            max_row = mean_KWH_by_state_3.loc[mean_KWH_by_state_3['Average_KWH'].idxmax()]
+            max_state = max_row['State']
+            max_value = max_row['Average_KWH']
+
+            min_row = mean_KWH_by_state_3.loc[mean_KWH_by_state_3['Average_KWH'].idxmin()]
+            min_state = min_row['State']
+            min_value = min_row['Average_KWH']
+            c1, c2 = st.columns((1, 1), gap='medium')
+            with c1:
+                st.metric(label=max_state, value=f"{max_value:.2f} kWh", delta='Max')
+
+            with c2:
+                st.metric(label=min_state, value=f"{min_value:.2f} kWh", delta='Min')
+            st.plotly_chart(fig, use_container_width=False)
+
+        # -----------------------------Scenario II: Consumer Behavior Changes------------------------------------
+
+        st.title('Scenario III: Consumer Behavior Changes')
+        st.write('Winter thermostat setting in home increases 1 °F (when no one is home during the day)')
+        TEMPGONE_1 = df['TEMPGONE'] + 1
+        df_02 = df.drop('TEMPGONE', axis=1)
+        df4 = pd.concat([df_02, TEMPGONE_1.rename('TEMPGONE')], axis=1)
+        prediction_4 = model.predict(df4)
+        labels = ['Max', 'Mean', 'Min']
+        values_4 = [prediction_4.max(), prediction_4.mean(), prediction_4.min()]
+
+        df4['KWH'] = prediction_4
+        mean_KWH_by_state_4 = df4['KWH'].groupby(df4['state_name']).mean().reset_index()
+        mean_KWH_by_state_4.columns = ['State', 'Average_KWH']
+
+        geojson_path = 'contiguous-usa.geojson'
+
+        with open(geojson_path, encoding='utf8') as f:
+            geojson_data = json.load(f)
+
+        fig = px.choropleth(
+            mean_KWH_by_state_4,
+            geojson=geojson_data,
+            locations='State',  # Column with state names
+            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
+            color='Average_KWH',  # Column to use for color scale
+            hover_name='State',  # Hover data: state names
+            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
+            color_continuous_scale='reds',  # Color scale
+            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
+            scope='usa'  # Focus on the USA
+        )
+
+        # Update the layout of the map
+        fig.update_layout(
+            title_text='Predictive Average Household Electricity Consumption by State',
+            geo=dict(
+                showlakes=True,  # Show lakes
+                lakecolor='rgb(255, 255, 255)'
+            ),
+            coloraxis_colorbar=dict(
+                title="Avg KWH",  # Title of the color bar
+                len=0.8,  # Length of the color bar (50% of map height)
+                thickness=15,  # Thickness in pixels
+                # x=1.05,  # X position (moves it away from the map)
+                # y=0.5,  # Y position (centers it vertically)
+            ),
+            width=800,
+            height=450
+
+        )
+        c1, c2 = st.columns((1, 2), gap='medium')
+        with c1:
+            max_row = df4.loc[df4['KWH'].idxmax()]
+            max_state = max_row['state_name']
+            max_value = max_row['KWH']
+            st.metric(label=f"Max Consumption Household: {max_state}", value=f"{max_value:.2f} kWh")
+            predic_bar(labels, values_4)
+
+        with c2:
+            max_row = mean_KWH_by_state_4.loc[mean_KWH_by_state_4['Average_KWH'].idxmax()]
+            max_state = max_row['State']
+            max_value = max_row['Average_KWH']
+
+            min_row = mean_KWH_by_state_4.loc[mean_KWH_by_state_4['Average_KWH'].idxmin()]
+            min_state = min_row['State']
+            min_value = min_row['Average_KWH']
+            c1, c2 = st.columns((1, 1), gap='medium')
+            with c1:
+                st.metric(label=max_state, value=f"{max_value:.2f} kWh", delta='Max')
+
+            with c2:
+                st.metric(label=min_state, value=f"{min_value:.2f} kWh", delta='Min')
+            st.plotly_chart(fig, use_container_width=False)
+
+
+
+
+
+
+
+
+
+#------------------------------------------Scenario Prediction------------------------------------------
+
+#elif page1=='📈Scenario Prediction':
 
 
     # %%
-    import pandas as pd
-    import warnings
-    import joblib
-
-    warnings.filterwarnings("ignore")
-
-    model = joblib.load('xgb.joblib')
-    
-    final_data = pd.read_csv('final_data.csv')
-    df = final_data.drop('KWH', axis=1)
-
-
-    df_0 = df.drop(columns=['HDD65', 'CDD65'])
-
-    HDD65_1 = df['HDD65'] * 1
-    CDD65_1 = df['CDD65'] * 1
-    df1 = pd.concat([df_0, HDD65_1.rename('HDD65'), CDD65_1.rename('CDD65')], axis=1)
-
-    HDD65_2 = df['HDD65'] * 1.5
-    CDD65_2 = df['CDD65'] * 1.5
-    df2 = pd.concat([df_0, HDD65_2.rename('HDD65'), CDD65_2.rename('CDD65')], axis=1)
-
-
-    # Make the prediction
-
-    prediction_1 = model.predict(df1)
-    prediction_2 = model.predict(df2)
-
-    labels = ['Max','Mean', 'Min']
-    values_1 = [prediction_1.max(), prediction_1.mean(), prediction_1.min()]
-    values_2 = [prediction_2.max(), prediction_2.mean(), prediction_2.min()]
-    def predic_bar(labels,values):
-        fig = px.bar(
-            x=labels,
-            y=values,
-            color=labels,
-            labels={'x': 'Categories', 'y': 'Values'},
-            title="Predictive Household Electricity Consumption in U.S"
-        )
-        fig.update_layout(
-            xaxis_title="Categories",
-            yaxis_title="Electricity Consumption (KWH)",
-            title_font_size=20,
-            width=800,
-            height=450
-        )
-
-        st.plotly_chart(fig)
-
-
-    df2['KWH'] = prediction_2
-    mean_KWH = df2['KWH'].groupby(df2['state_name']).mean()
-    mean_KWH_by_state_2 = df2['KWH'].groupby(df2['state_name']).mean().reset_index()
-    mean_KWH_by_state_2.columns = ['State', 'Average_KWH']
-
-    geojson_path = 'contiguous-usa.geojson'
-    # https://github.com/ResidentMario/geoplot-data/blob/master/contiguous-usa.geojson
-    with open(geojson_path, encoding='utf8') as f:
-        geojson_data = json.load(f)
-
-    fig = px.choropleth(
-        mean_KWH_by_state_2,
-        geojson=geojson_data,
-        locations='State',  # Column with state names
-        featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
-        color='Average_KWH',  # Column to use for color scale
-        hover_name='State',  # Hover data: state names
-        hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-        color_continuous_scale='greens',  # Color scale
-        labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
-        scope='usa'  # Focus on the USA
-    )
-
-    # Update the layout of the map
-    fig.update_layout(
-        title_text='Predictive Average Household Electricity Consumption by State',
-        geo=dict(
-            showlakes=True,  # Show lakes
-            lakecolor='rgb(255, 255, 255)'
-        ),
-        coloraxis_colorbar=dict(
-            title="Avg KWH",  # Title of the color bar
-            len=0.8,  # Length of the color bar (50% of map height)
-            thickness=15,  # Thickness in pixels
-            #x=1.05,  # X position (moves it away from the map)
-            #y=0.5,  # Y position (centers it vertically)
-        ),
-        width=800,
-        height=450
-
-    )
-
-#-----------------------------Scenario I: Surge Climate Change------------------------------------
-
-    st.title('Scenario I: Surge Climate Change')
-    st.write('HDD65 increases 25% and CDD65 increases 25%')
-    # both HDD and CDD have increasing trend: https://www.eia.gov/outlooks/steo/data/browser/#/?v=28&f=A&s=&start=1999&end=2023&chartindexed=2&linechart=ZWCDPUS~ZWHDPUS~&maptype=0&ctype=linechart&map=&id=
-    c1, c2   = st.columns((1, 2), gap='medium')
-    with c1:
-        max_row = df2.loc[df2['KWH'].idxmax()]
-        max_state = max_row['state_name']
-        max_value = max_row['KWH']
-        st.metric(label=f"Max Consumption Household: {max_state}", value=f"{max_value:.2f} kWh")
-        predic_bar(labels,values_2)
-
-    with c2:
-        max_row = mean_KWH_by_state_2.loc[mean_KWH_by_state_2['Average_KWH'].idxmax()]
-        max_state = max_row['State']
-        max_value = max_row['Average_KWH']
-
-        min_row = mean_KWH_by_state_2.loc[mean_KWH_by_state_2['Average_KWH'].idxmin()]
-        min_state = min_row['State']
-        min_value = min_row['Average_KWH']
-        c1, c2 = st.columns((1, 1), gap='medium')
-        with c1:
-            st.metric(label=max_state, value=f"{max_value:.2f} kWh", delta='Max')
-
-        with c2:
-            st.metric(label=min_state, value=f"{min_value:.2f} kWh",delta='Min')
-        st.plotly_chart(fig, use_container_width=False)
-
-
-
-    st.write(
-        """
-        <style>
-        [data-testid="stMetric"] {
-            border: 5px solid #959595; /* Add a light grey border */
-            border-radius: 15px;    /* Rounded corners */
-            padding: 10px;         /* Add some padding inside the border */
-            background-color: #ccc; /* Optional: Light background for a better visual effect */
-            font-weight: bold;
-        }
-        [data-testid="stMetricDelta"] svg {
-            display: none; /* Hides the delta arrow */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.title('Scenario II: Groundwater temperatures rise')
-    st.write('Annual average ground water temperature increases 6.3°F')
-    # The study, which was published in Nature Geoscience, indicates that by 2100,
-    # groundwater temperatures will rise by 6.3°F.
-    # https://www.ngwa.org/detail/news/2024/07/12/study-indicates-groundwater-temperature-increasing-6.3-f-by-2100#:~:text=The%20study%2C%20which%20was%20published,the%20strictest%20drinking%20water%20guidelines.
-    GWT_1 = df['GWT'] + 6.3
-    df_01=df.drop('GWT',axis=1)
-    df3 = pd.concat([df_01, GWT_1.rename('GWT')], axis=1)
-    prediction_3 = model.predict(df3)
-    labels = ['Max', 'Mean', 'Min']
-    values_3 = [prediction_3.max(), prediction_3.mean(), prediction_3.min()]
-
-    df3['KWH'] = prediction_3
-    mean_KWH_by_state_3 = df3['KWH'].groupby(df3['state_name']).mean().reset_index()
-    mean_KWH_by_state_3.columns = ['State', 'Average_KWH']
-
-    geojson_path = 'contiguous-usa.geojson'
-
-    with open(geojson_path, encoding='utf8') as f:
-        geojson_data = json.load(f)
-
-    fig = px.choropleth(
-        mean_KWH_by_state_3,
-        geojson=geojson_data,
-        locations='State',  # Column with state names
-        featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
-        color='Average_KWH',  # Column to use for color scale
-        hover_name='State',  # Hover data: state names
-        hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-        color_continuous_scale='blues',  # Color scale
-        labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
-        scope='usa'  # Focus on the USA
-    )
-
-    # Update the layout of the map
-    fig.update_layout(
-        title_text='Predictive Average Household Electricity Consumption by State',
-        geo=dict(
-            showlakes=True,  # Show lakes
-            lakecolor='rgb(255, 255, 255)'
-        ),
-        coloraxis_colorbar=dict(
-            title="Avg KWH",  # Title of the color bar
-            len=0.8,  # Length of the color bar (50% of map height)
-            thickness=15,  # Thickness in pixels
-            # x=1.05,  # X position (moves it away from the map)
-            # y=0.5,  # Y position (centers it vertically)
-        ),
-        width=800,
-        height=450
-
-    )
-    c1, c2 = st.columns((1, 2), gap='medium')
-    with c1:
-        max_row = df3.loc[df3['KWH'].idxmax()]
-        max_state = max_row['state_name']
-        max_value = max_row['KWH']
-        st.metric(label=f"Max Consumption Household: {max_state}", value=f"{max_value:.2f} kWh")
-        predic_bar(labels, values_3)
-
-    with c2:
-        max_row = mean_KWH_by_state_3.loc[mean_KWH_by_state_3['Average_KWH'].idxmax()]
-        max_state = max_row['State']
-        max_value = max_row['Average_KWH']
-
-        min_row = mean_KWH_by_state_3.loc[mean_KWH_by_state_3['Average_KWH'].idxmin()]
-        min_state = min_row['State']
-        min_value = min_row['Average_KWH']
-        c1, c2 = st.columns((1, 1), gap='medium')
-        with c1:
-            st.metric(label=max_state, value=f"{max_value:.2f} kWh", delta='Max')
-
-        with c2:
-            st.metric(label=min_state, value=f"{min_value:.2f} kWh", delta='Min')
-        st.plotly_chart(fig, use_container_width=False)
 
 
 
 
 
 
-#-----------------------------Scenario II: Consumer Behavior Changes------------------------------------
 
-    st.title('Scenario III: Consumer Behavior Changes')
-    st.write('Winter thermostat setting in home increases 1 °F (when no one is home during the day)')
-    TEMPGONE_1 = df['TEMPGONE'] + 1
-    df_02 = df.drop('TEMPGONE', axis=1)
-    df4 = pd.concat([df_02, TEMPGONE_1.rename('TEMPGONE')], axis=1)
-    prediction_4 = model.predict(df4)
-    labels = ['Max', 'Mean', 'Min']
-    values_4 = [prediction_4.max(), prediction_4.mean(), prediction_4.min()]
-
-    df4['KWH'] = prediction_4
-    mean_KWH_by_state_4 = df4['KWH'].groupby(df4['state_name']).mean().reset_index()
-    mean_KWH_by_state_4.columns = ['State', 'Average_KWH']
-
-    geojson_path = 'contiguous-usa.geojson'
-
-    with open(geojson_path, encoding='utf8') as f:
-        geojson_data = json.load(f)
-
-    fig = px.choropleth(
-        mean_KWH_by_state_4,
-        geojson=geojson_data,
-        locations='State',  # Column with state names
-        featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
-        color='Average_KWH',  # Column to use for color scale
-        hover_name='State',  # Hover data: state names
-        hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-        color_continuous_scale='reds',  # Color scale
-        labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
-        scope='usa'  # Focus on the USA
-    )
-
-    # Update the layout of the map
-    fig.update_layout(
-        title_text='Predictive Average Household Electricity Consumption by State',
-        geo=dict(
-            showlakes=True,  # Show lakes
-            lakecolor='rgb(255, 255, 255)'
-        ),
-        coloraxis_colorbar=dict(
-            title="Avg KWH",  # Title of the color bar
-            len=0.8,  # Length of the color bar (50% of map height)
-            thickness=15,  # Thickness in pixels
-            # x=1.05,  # X position (moves it away from the map)
-            # y=0.5,  # Y position (centers it vertically)
-        ),
-        width=800,
-        height=450
-
-    )
-    c1, c2 = st.columns((1, 2), gap='medium')
-    with c1:
-        max_row = df4.loc[df4['KWH'].idxmax()]
-        max_state = max_row['state_name']
-        max_value = max_row['KWH']
-        st.metric(label=f"Max Consumption Household: {max_state}", value=f"{max_value:.2f} kWh")
-        predic_bar(labels, values_4)
-
-    with c2:
-        max_row = mean_KWH_by_state_4.loc[mean_KWH_by_state_4['Average_KWH'].idxmax()]
-        max_state = max_row['State']
-        max_value = max_row['Average_KWH']
-
-        min_row = mean_KWH_by_state_4.loc[mean_KWH_by_state_4['Average_KWH'].idxmin()]
-        min_state = min_row['State']
-        min_value = min_row['Average_KWH']
-        c1, c2 = st.columns((1, 1), gap='medium')
-        with c1:
-            st.metric(label=max_state, value=f"{max_value:.2f} kWh", delta='Max')
-
-        with c2:
-            st.metric(label=min_state, value=f"{min_value:.2f} kWh", delta='Min')
-        st.plotly_chart(fig, use_container_width=False)
 
 
 
