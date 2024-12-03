@@ -581,7 +581,7 @@ if page=='📊Data Visualization':
 
 #------------------------------------------Model Prediction------------------------------------------
 elif page=='📈Prediction':
-    prediction_option = st.sidebar.selectbox('choose one',
+    prediction_option = st.sidebar.selectbox('choose Model Prediction/Scenario Prediction',
                                          ["Model Prediction", "Scenario Prediction"])
     if prediction_option=="Model Prediction":
         import pandas as pd
