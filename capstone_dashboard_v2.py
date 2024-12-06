@@ -13,8 +13,6 @@ import seaborn as sns
 import plotly.graph_objects as go
 import joblib
 from PIL import Image
-import warnings
-
 
 
 
@@ -465,9 +463,15 @@ def boxplot(data,x,y,title,category_orders):
 
 
 
+
+
 #=========================================================================================================
 #                                   Select Option
 #=========================================================================================================
+#st.sidebar.title('Choose Sector')
+#page=st.sidebar.radio(['','Data Visualization', 'Prediction'])
+import pickle
+
 
 if page=='📊Data Visualization':
     st.markdown('Data Source: EIA')
@@ -482,7 +486,7 @@ if page=='📊Data Visualization':
         fig = px.choropleth(
             mean_KWH_by_state,
             geojson=geojson_data,
-            locations='State',  
+            locations='State',  # Column with state names
             featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
             color='Average_KWH',  # Column to use for color scale
             hover_name='State',  # Hover data: state names
@@ -581,12 +585,15 @@ elif page=='📈Prediction':
     prediction_option = st.sidebar.selectbox('choose Model Prediction/Scenario Prediction',
                                          ["Model Prediction", "Scenario Prediction"])
     if prediction_option=="Model Prediction":
-        
+        import pandas as pd
+        import warnings
+        import joblib
         warnings.filterwarnings("ignore")
         model = joblib.load('xgb.joblib')
         final_data = pd.read_csv('final_data.csv')
-        df = final_data.drop('KWH', axis=1)	
-	st.title('Prediction of Household Annual Electricity Consumption')
+        df = final_data.drop('KWH', axis=1)
+
+        st.title('Prediction of Household Annual Electricity Consumption')
 
         prediction = model.predict(df)
         data = pd.read_csv('recs2020_public_v7.csv')
@@ -607,8 +614,7 @@ elif page=='📈Prediction':
         st.dataframe([data1['Household ID'],data1['KWH']], use_container_width=True)
 
 
-        st.title('Prediction of One Household Annual Electricity Consumption')    
-
+        st.title('Prediction of One Household Annual Electricity Consumption')
         state_name = st.selectbox('State', ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
                                             'Colorado', 'Connecticut', 'Delaware', 'District of Columbia',
                                             'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana',
@@ -628,11 +634,11 @@ elif page=='📈Prediction':
         climate = df2['BA_climate'].unique()
         #IECCclimatecode = df2['IECC_climate_code'].unique()[0]
 
-        climate_zone = st.selectbox('Cilmate Zone', climate)
+        climate_zone = st.selectbox('Cilmate_Zone', climate)
         if climate_zone:
             IECCclimatecode = df2[df2['BA_climate'] == climate_zone]['IECC_climate_code'].unique()[0]
             #st.write(f"IECC Climate Code: {IECCclimatecode}")
-        
+        #IECCclimatecode = df2[df2['BA_climate']==climate_zone][0]
         SQFTEST = st.number_input('House Size(square feet)', value=None,
                                   placeholder="Enter the square feet of your house")  # enter value
         NHSLDMEM = st.selectbox('Number of Household Members', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
@@ -647,9 +653,22 @@ elif page=='📈Prediction':
             '2010 to 2015': '8',
             '2016 to 2020': '9',
          }
-        YEARMADERANGE = st.selectbox('When Housing Unit Was Built',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
+        YEARMADERANGE = st.selectbox('House Age',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
              '1990 to 1999', '2000 to 2009', '2010 to 2015', '2016 to 2020'])
         YEARMADERANGE_numeric = YEARMADERANGE_mapping[YEARMADERANGE]
+
+        housing_unit_type_mapping = {
+            1: 'Mobile home',
+            2: 'Single - family house detached from any other house',
+            3: 'Single - family house attached to one or more other houses',
+            4: 'Apartment in a building with 2 to 4 units',
+            5: 'Apartment in a building with 5 or more units'
+        }
+        #TYPEHUQ = st.selectbox('Housing unit type',['Mobile home', 'Single - family house detached from any other house',
+        #                                          'Single - family house attached to one or more other houses',
+        #                                          'Apartment in a building with 2 to 4 units',
+        #                                          'Apartment in a building with 5 or more units'])
+        #TYPEHUQ_numeric =housing_unit_type_mapping[TYPEHUQ]
 
         input_data = {
             'REGIONC': [region],
@@ -665,6 +684,7 @@ elif page=='📈Prediction':
             'YEARMADERANGE':[YEARMADERANGE_numeric],
             'SQFTEST': [SQFTEST],
             'NHSLDMEM': [NHSLDMEM],
+            #'TYPEHUQ': [TYPEHUQ],
             #'ELWATER': [ELWATER_numeric],
             #'FUELHEAT': [FUELHEAT_numeric],
             #'TOTCSQFT': [TOTCSQFT],
@@ -689,9 +709,18 @@ elif page=='📈Prediction':
         input_data_df = pd.DataFrame(input_data)
 
         # Make the prediction
-        if st.button("Predicting Annual Electricity Consumption in Households", type='primary'):
+        if st.button("Predict", type='primary'):
             prediction = model.predict(input_data_df)
-            
+            # st.write("Predicted Electricity Consumption (KWH):", prediction[0])
+
+            # st.markdown(
+            #    f"""
+            #            <div style="font-size:20px; color:#EB5406; font-weight: bold; font-style: italic; ">
+            #                Predicted Household Electricity Consumption (KWH): {prediction[0]}
+            #            </div>
+            #            """,
+            #    unsafe_allow_html=True
+            # )
             average_state = final_data[final_data['state_name'] == state_name]['KWH'].mean()
             average = final_data['KWH'].mean()
 
@@ -702,7 +731,7 @@ elif page=='📈Prediction':
                 y=values,
                 color=labels,
                 labels={'x': 'Categories', 'y': 'Values'},
-                title="Annual Household Electricity Consumption"
+                title="Household Energy Consumption"
             )
             fig.update_layout(
                 xaxis_title="Categories",
@@ -710,7 +739,7 @@ elif page=='📈Prediction':
                 title_font_size=20
             )
 
-    
+            # st.pyplot(fig)
 
             c1, c2 = st.columns((1, 1), gap='medium')
             with c2:
@@ -719,11 +748,18 @@ elif page=='📈Prediction':
                 st.markdown(
                     f"""
                                                 <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
-                                                    Annual Electricity Consumption Prediction for Households (kWh): {prediction[0]}
+                                                    Predicted Household Electricity Consumption (kWh): {prediction[0]}
                                                 </div>
                                                 """,
                     unsafe_allow_html=True
                 )
+
+
+
+
+
+
+
 
 
 
@@ -796,34 +832,41 @@ elif page=='📈Prediction':
         fig = px.choropleth(
             mean_KWH_by_state_2,
             geojson=geojson_data,
-            locations='State',  
-            featureidkey='properties.state',  
-            color='Average_KWH',  
-            hover_name='State',  
-            hover_data={'Average_KWH': ':.2f'},  
-            color_continuous_scale='greens',  
-            labels={'Average_KWH': 'Avg KWH Consumption'},  
-            scope='usa'  
+            locations='State',  # Column with state names
+            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
+            color='Average_KWH',  # Column to use for color scale
+            hover_name='State',  # Hover data: state names
+            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
+            color_continuous_scale='greens',  # Color scale
+            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
+            scope='usa'  # Focus on the USA
         )
 
         # Update the layout of the map
         fig.update_layout(
             title_text='Predictive Average Household Electricity Consumption by State',
             geo=dict(
-                showlakes=True,  
+                showlakes=True,  # Show lakes
                 lakecolor='rgb(255, 255, 255)'
             ),
             coloraxis_colorbar=dict(
-                title="Avg KWH",  
-                len=0.8,  
-                thickness=15,  
-                # x=1.05,  
-                # y=0.5,  
+                title="Avg KWH",  # Title of the color bar
+                len=0.8,  # Length of the color bar (50% of map height)
+                thickness=15,  # Thickness in pixels
+                # x=1.05,  # X position (moves it away from the map)
+                # y=0.5,  # Y position (centers it vertically)
             ),
             width=800,
             height=450
 
         )
+
+
+
+
+
+
+
 
         # -----------------------------Scenario I: Surge Climate Change------------------------------------
 
@@ -896,29 +939,29 @@ elif page=='📈Prediction':
         fig = px.choropleth(
             mean_KWH_by_state_3,
             geojson=geojson_data,
-            locations='State',  
-            featureidkey='properties.state',  
-            color='Average_KWH',  
-            hover_name='State',  
-            hover_data={'Average_KWH': ':.2f'},  
-            color_continuous_scale='blues',  
-            labels={'Average_KWH': 'Avg KWH Consumption'},  
-            scope='usa'  
+            locations='State',  # Column with state names
+            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
+            color='Average_KWH',  # Column to use for color scale
+            hover_name='State',  # Hover data: state names
+            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
+            color_continuous_scale='blues',  # Color scale
+            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
+            scope='usa'  # Focus on the USA
         )
 
-        
+        # Update the layout of the map
         fig.update_layout(
             title_text='Predictive Average Household Electricity Consumption by State',
             geo=dict(
-                showlakes=True,  
+                showlakes=True,  # Show lakes
                 lakecolor='rgb(255, 255, 255)'
             ),
             coloraxis_colorbar=dict(
-                title="Avg KWH",  
-                len=0.8,  
-                thickness=15,  
-                # x=1.05,  
-                # y=0.5,  
+                title="Avg KWH",  # Title of the color bar
+                len=0.8,  # Length of the color bar (50% of map height)
+                thickness=15,  # Thickness in pixels
+                # x=1.05,  # X position (moves it away from the map)
+                # y=0.5,  # Y position (centers it vertically)
             ),
             width=800,
             height=450
@@ -971,29 +1014,29 @@ elif page=='📈Prediction':
         fig = px.choropleth(
             mean_KWH_by_state_4,
             geojson=geojson_data,
-            locations='State',  
-            featureidkey='properties.state',  
-            color='Average_KWH',  
-            hover_name='State',  
-            hover_data={'Average_KWH': ':.2f'},  
-            color_continuous_scale='reds',  
-            labels={'Average_KWH': 'Avg KWH Consumption'},  
-            scope='usa'  
+            locations='State',  # Column with state names
+            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
+            color='Average_KWH',  # Column to use for color scale
+            hover_name='State',  # Hover data: state names
+            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
+            color_continuous_scale='reds',  # Color scale
+            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
+            scope='usa'  # Focus on the USA
         )
 
-        
+        # Update the layout of the map
         fig.update_layout(
             title_text='Predictive Average Household Electricity Consumption by State',
             geo=dict(
-                showlakes=True,  
+                showlakes=True,  # Show lakes
                 lakecolor='rgb(255, 255, 255)'
             ),
             coloraxis_colorbar=dict(
-                title="Avg KWH",  
-                len=0.8,  
-                thickness=15,  
-                # x=1.05,  
-                # y=0.5,  
+                title="Avg KWH",  # Title of the color bar
+                len=0.8,  # Length of the color bar (50% of map height)
+                thickness=15,  # Thickness in pixels
+                # x=1.05,  # X position (moves it away from the map)
+                # y=0.5,  # Y position (centers it vertically)
             ),
             width=800,
             height=450
@@ -1031,6 +1074,12 @@ elif page=='📈Prediction':
 
 
 
+#------------------------------------------Scenario Prediction------------------------------------------
+
+#elif page1=='📈Scenario Prediction':
+
+
+    # %%
 
 
 
