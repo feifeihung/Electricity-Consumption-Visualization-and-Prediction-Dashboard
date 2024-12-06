@@ -58,7 +58,7 @@ st.markdown(background_style, unsafe_allow_html=True)
 
 st.markdown("<h1 style= 'text-align:center; color:white;  '>U.S. Household Electricity Consumption Dashboard</h1> ", unsafe_allow_html=True)
 st.write('')
-st.markdown('Data Source: EIA')
+
 
 
 selectbox_style="""
@@ -470,6 +470,7 @@ def boxplot(data,x,y,title,category_orders):
 #=========================================================================================================
 
 if page=='📊Data Visualization':
+    st.markdown('Data Source: EIA')
     option = st.selectbox(
         label='Critical Features for Household Electricity Consumption',
         options=['Location', 'Weather', 'House Conditions', 'Household Characteristics', 'Appliances'])
