@@ -586,6 +586,28 @@ elif page=='📈Prediction':
         model = joblib.load('xgb.joblib')
         final_data = pd.read_csv('final_data.csv')
         df = final_data.drop('KWH', axis=1)
+	st.title('Prediction of Household Annual Electricity Consumption')
+
+        prediction = model.predict(df)
+        data = pd.read_csv('recs2020_public_v7.csv')
+        data1 = data[data.KWH <= 80000]
+        data1['KWH'] = prediction
+        fig = px.scatter(data1, data1['DOEID'], data1['KWH'])
+        fig.update_layout(
+            title_text='Predictive Annual Electricity Consumption',
+            xaxis_title='Household ID',
+            yaxis_title='KWH',
+            bargap=0.2,
+            width=700,
+            height=350
+        )
+        st.plotly_chart(fig)
+        st.subheader('Predictive Annual Electricity Consumption')
+        data1 = data1.rename(columns={'DOEID': 'Household ID'})
+        st.dataframe([data1['Household ID'],data1['KWH']], use_container_width=True)
+
+
+        st.title('Prediction of One Household Annual Electricity Consumption')    
 
         state_name = st.selectbox('State', ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
                                             'Colorado', 'Connecticut', 'Delaware', 'District of Columbia',
