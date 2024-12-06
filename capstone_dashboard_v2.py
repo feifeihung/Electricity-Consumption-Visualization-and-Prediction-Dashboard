@@ -605,7 +605,7 @@ elif page=='📈Prediction':
         climate = df2['BA_climate'].unique()
         #IECCclimatecode = df2['IECC_climate_code'].unique()[0]
 
-        climate_zone = st.selectbox('Cilmate_Zone', climate)
+        climate_zone = st.selectbox('Cilmate Zone', climate)
         if climate_zone:
             IECCclimatecode = df2[df2['BA_climate'] == climate_zone]['IECC_climate_code'].unique()[0]
             #st.write(f"IECC Climate Code: {IECCclimatecode}")
@@ -624,7 +624,7 @@ elif page=='📈Prediction':
             '2010 to 2015': '8',
             '2016 to 2020': '9',
          }
-        YEARMADERANGE = st.selectbox('House Age',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
+        YEARMADERANGE = st.selectbox('When Housing Unit Was Built',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
              '1990 to 1999', '2000 to 2009', '2010 to 2015', '2016 to 2020'])
         YEARMADERANGE_numeric = YEARMADERANGE_mapping[YEARMADERANGE]
 
