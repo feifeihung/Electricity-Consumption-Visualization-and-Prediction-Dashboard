@@ -482,7 +482,7 @@ if page=='📊Data Visualization':
         fig = px.choropleth(
             mean_KWH_by_state,
             geojson=geojson_data,
-            locations='State',  # Column with state names
+            locations='State',  
             featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
             color='Average_KWH',  # Column to use for color scale
             hover_name='State',  # Hover data: state names
@@ -774,29 +774,29 @@ elif page=='📈Prediction':
         fig = px.choropleth(
             mean_KWH_by_state_2,
             geojson=geojson_data,
-            locations='State',  # Column with state names
-            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
-            color='Average_KWH',  # Column to use for color scale
-            hover_name='State',  # Hover data: state names
-            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-            color_continuous_scale='greens',  # Color scale
-            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
-            scope='usa'  # Focus on the USA
+            locations='State',  
+            featureidkey='properties.state',  
+            color='Average_KWH',  
+            hover_name='State',  
+            hover_data={'Average_KWH': ':.2f'},  
+            color_continuous_scale='greens',  
+            labels={'Average_KWH': 'Avg KWH Consumption'},  
+            scope='usa'  
         )
 
         # Update the layout of the map
         fig.update_layout(
             title_text='Predictive Average Household Electricity Consumption by State',
             geo=dict(
-                showlakes=True,  # Show lakes
+                showlakes=True,  
                 lakecolor='rgb(255, 255, 255)'
             ),
             coloraxis_colorbar=dict(
-                title="Avg KWH",  # Title of the color bar
-                len=0.8,  # Length of the color bar (50% of map height)
-                thickness=15,  # Thickness in pixels
-                # x=1.05,  # X position (moves it away from the map)
-                # y=0.5,  # Y position (centers it vertically)
+                title="Avg KWH",  
+                len=0.8,  
+                thickness=15,  
+                # x=1.05,  
+                # y=0.5,  
             ),
             width=800,
             height=450
@@ -874,29 +874,29 @@ elif page=='📈Prediction':
         fig = px.choropleth(
             mean_KWH_by_state_3,
             geojson=geojson_data,
-            locations='State',  # Column with state names
-            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
-            color='Average_KWH',  # Column to use for color scale
-            hover_name='State',  # Hover data: state names
-            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-            color_continuous_scale='blues',  # Color scale
-            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
-            scope='usa'  # Focus on the USA
+            locations='State',  
+            featureidkey='properties.state',  
+            color='Average_KWH',  
+            hover_name='State',  
+            hover_data={'Average_KWH': ':.2f'},  
+            color_continuous_scale='blues',  
+            labels={'Average_KWH': 'Avg KWH Consumption'},  
+            scope='usa'  
         )
 
-        # Update the layout of the map
+        
         fig.update_layout(
             title_text='Predictive Average Household Electricity Consumption by State',
             geo=dict(
-                showlakes=True,  # Show lakes
+                showlakes=True,  
                 lakecolor='rgb(255, 255, 255)'
             ),
             coloraxis_colorbar=dict(
-                title="Avg KWH",  # Title of the color bar
-                len=0.8,  # Length of the color bar (50% of map height)
-                thickness=15,  # Thickness in pixels
-                # x=1.05,  # X position (moves it away from the map)
-                # y=0.5,  # Y position (centers it vertically)
+                title="Avg KWH",  
+                len=0.8,  
+                thickness=15,  
+                # x=1.05,  
+                # y=0.5,  
             ),
             width=800,
             height=450
@@ -949,29 +949,29 @@ elif page=='📈Prediction':
         fig = px.choropleth(
             mean_KWH_by_state_4,
             geojson=geojson_data,
-            locations='State',  # Column with state names
-            featureidkey='properties.state',  # This depends on how state names are stored in the GeoJSON file
-            color='Average_KWH',  # Column to use for color scale
-            hover_name='State',  # Hover data: state names
-            hover_data={'Average_KWH': ':.2f'},  # Format KWH to 2 decimal places
-            color_continuous_scale='reds',  # Color scale
-            labels={'Average_KWH': 'Avg KWH Consumption'},  # Label for the color bar
-            scope='usa'  # Focus on the USA
+            locations='State',  
+            featureidkey='properties.state',  
+            color='Average_KWH',  
+            hover_name='State',  
+            hover_data={'Average_KWH': ':.2f'},  
+            color_continuous_scale='reds',  
+            labels={'Average_KWH': 'Avg KWH Consumption'},  
+            scope='usa'  
         )
 
-        # Update the layout of the map
+        
         fig.update_layout(
             title_text='Predictive Average Household Electricity Consumption by State',
             geo=dict(
-                showlakes=True,  # Show lakes
+                showlakes=True,  
                 lakecolor='rgb(255, 255, 255)'
             ),
             coloraxis_colorbar=dict(
-                title="Avg KWH",  # Title of the color bar
-                len=0.8,  # Length of the color bar (50% of map height)
-                thickness=15,  # Thickness in pixels
-                # x=1.05,  # X position (moves it away from the map)
-                # y=0.5,  # Y position (centers it vertically)
+                title="Avg KWH",  
+                len=0.8,  
+                thickness=15,  
+                # x=1.05,  
+                # y=0.5,  
             ),
             width=800,
             height=450
@@ -1009,12 +1009,6 @@ elif page=='📈Prediction':
 
 
 
-#------------------------------------------Scenario Prediction------------------------------------------
-
-#elif page1=='📈Scenario Prediction':
-
-
-    # %%
 
 
 
