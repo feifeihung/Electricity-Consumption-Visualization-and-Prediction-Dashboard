@@ -666,7 +666,7 @@ elif page=='📈Prediction':
         input_data_df = pd.DataFrame(input_data)
 
         # Make the prediction
-        if st.button("Predict", type='primary'):
+        if st.button("U.S. Household Electricity Consumption Prediction", type='primary'):
             prediction = model.predict(input_data_df)
             
             average_state = final_data[final_data['state_name'] == state_name]['KWH'].mean()
