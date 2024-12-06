@@ -585,7 +585,7 @@ elif page=='📈Prediction':
         warnings.filterwarnings("ignore")
         model = joblib.load('xgb.joblib')
         final_data = pd.read_csv('final_data.csv')
-        df = final_data.drop('KWH', axis=1)
+        df = final_data.drop('KWH', axis=1)	
 	st.title('Prediction of Household Annual Electricity Consumption')
 
         prediction = model.predict(df)
