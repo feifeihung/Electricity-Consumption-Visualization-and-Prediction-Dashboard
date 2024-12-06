@@ -666,7 +666,7 @@ elif page=='📈Prediction':
         input_data_df = pd.DataFrame(input_data)
 
         # Make the prediction
-        if st.button("U.S. Household Electricity Consumption Prediction", type='primary'):
+        if st.button("Predicting Annual Electricity Consumption in Households", type='primary'):
             prediction = model.predict(input_data_df)
             
             average_state = final_data[final_data['state_name'] == state_name]['KWH'].mean()
@@ -679,7 +679,7 @@ elif page=='📈Prediction':
                 y=values,
                 color=labels,
                 labels={'x': 'Categories', 'y': 'Values'},
-                title="Annual Household Energy Consumption"
+                title="Annual Household Electricity Consumption"
             )
             fig.update_layout(
                 xaxis_title="Categories",
@@ -696,7 +696,7 @@ elif page=='📈Prediction':
                 st.markdown(
                     f"""
                                                 <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
-                                                    Predicted Household Annual Electricity Consumption (kWh): {prediction[0]}
+                                                    Annual Electricity Consumption Prediction for Households (kWh): {prediction[0]}
                                                 </div>
                                                 """,
                     unsafe_allow_html=True
