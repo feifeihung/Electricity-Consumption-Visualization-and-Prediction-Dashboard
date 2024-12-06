@@ -653,7 +653,7 @@ elif page=='📈Prediction':
             '2010 to 2015': '8',
             '2016 to 2020': '9',
          }
-        YEARMADERANGE = st.selectbox('House Age',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
+        YEARMADERANGE = st.selectbox('Range When Housing Unit Was Built',['Before 1950', '1950 to 1959', '1960 to 1969', '1970 to 1979', '1980 to 1989',
              '1990 to 1999', '2000 to 2009', '2010 to 2015', '2016 to 2020'])
         YEARMADERANGE_numeric = YEARMADERANGE_mapping[YEARMADERANGE]
 
