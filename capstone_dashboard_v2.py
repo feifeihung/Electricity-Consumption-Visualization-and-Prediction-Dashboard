@@ -605,8 +605,8 @@ elif page=='📈Prediction':
             xaxis_title='Household ID',
             yaxis_title='KWH',
             bargap=0.2,
-            width=700,
-            height=350
+            width=800,
+            height=450
         )
         st.plotly_chart(fig)
         st.subheader('Predictive Annual Electricity Consumption')
