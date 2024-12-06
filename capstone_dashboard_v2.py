@@ -679,7 +679,7 @@ elif page=='📈Prediction':
                 y=values,
                 color=labels,
                 labels={'x': 'Categories', 'y': 'Values'},
-                title="Household Energy Consumption"
+                title="Annual Household Energy Consumption"
             )
             fig.update_layout(
                 xaxis_title="Categories",
@@ -696,7 +696,7 @@ elif page=='📈Prediction':
                 st.markdown(
                     f"""
                                                 <div style="font-size:25px; color:#EB5406; font-weight: bold; font-style: italic; ">
-                                                    Predicted Household Electricity Consumption (kWh): {prediction[0]}
+                                                    Predicted Household Annual Electricity Consumption (kWh): {prediction[0]}
                                                 </div>
                                                 """,
                     unsafe_allow_html=True
